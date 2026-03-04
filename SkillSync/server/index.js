@@ -7,10 +7,12 @@ import { connectDB } from './config/db.js';
 // Route Imports (Must include .js extension)
 import authRoutes from './routes/authRoutes.js';
 import gigRoutes from './routes/gigRoutes.js';
-import walletRoutes from './routes/walletRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import portfolioRoutes from './routes/portfolioRoutes.js';
+import achievementRoutes from './routes/achievementRoutes.js';
+import participationRoutes from './routes/participationRoutes.js';
 
 dotenv.config();
 
@@ -34,9 +36,11 @@ connectDB();
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/gigs', gigRoutes);
-app.use('/api/wallet', walletRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/portfolios', portfolioRoutes);
+app.use('/api/achievements', achievementRoutes);
+app.use('/api/participation', participationRoutes);
 
 app.get('/', (req, res) => {
     res.send('SkillSync API is running...');

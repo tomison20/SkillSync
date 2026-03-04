@@ -17,7 +17,7 @@ const Signup = () => {
     // Redirect if already logged in
     useEffect(() => {
         if (user) {
-            navigate('/dashboard');
+            navigate(`/dashboard/${user.role}`);
         }
     }, [navigate, user]);
 
@@ -28,7 +28,7 @@ const Signup = () => {
         try {
             const { data } = await api.post('/auth/register', formData);
             login(data); // Update context
-            navigate('/dashboard');
+            navigate(`/dashboard/${data.role}`);
         } catch (error) {
             console.error(error);
             alert('Registration Failed: ' + (error.response?.data?.message || 'Server Error'));
@@ -57,8 +57,11 @@ const Signup = () => {
                         <input type="password" className="input" name="password" onChange={handleChange} required />
                     </div>
                     <div className="input-group">
-                        <label className="label">Institute Code</label>
-                        <input className="input" name="instituteCode" onChange={handleChange} placeholder="Clg Name in caps" required />
+                        <label className="label" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            Institutional Code
+                            <Link to="/request-college" style={{ fontSize: '0.75rem', fontWeight: '400', textDecoration: 'underline' }}>Request My College</Link>
+                        </label>
+                        <input className="input" name="instituteCode" onChange={handleChange} placeholder="e.g. AJCE2026" required />
                     </div>
                     <div className="input-group">
                         <label className="label">I am a...</label>

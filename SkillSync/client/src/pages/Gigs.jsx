@@ -27,9 +27,11 @@ const Gigs = () => {
                     <span className="badge" style={{ background: '#E2E8F0', color: '#475569', marginBottom: '0.5rem' }}>
                         {user?.organization?.name || 'Organization'} Workspace
                     </span>
-                    <h1>Marketplace</h1>
+                    <h1>Verified Opportunities</h1>
                 </div>
-                <Link to="/gigs/create" className="btn btn-primary">Post a Gig</Link>
+                {(user?.role === 'organizer' || user?.role === 'admin') && (
+                    <Link to="/gigs/create" className="btn btn-primary">Create Opportunity</Link>
+                )}
             </div>
 
             <div className="grid-layout">
@@ -38,7 +40,7 @@ const Gigs = () => {
                         <h3>{gig.title}</h3>
                         <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>{gig.description}</p>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span className="badge badge-green">${gig.budget}</span>
+                            <span className="badge badge-status">Open</span>
                             <span className="badge badge-blue">{gig.status}</span>
                         </div>
                         <Link to={`/gigs/${gig._id}`} className="btn btn-outline" style={{ marginTop: '1rem', width: '100%', display: 'block', textAlign: 'center', textDecoration: 'none' }}>View Details</Link>

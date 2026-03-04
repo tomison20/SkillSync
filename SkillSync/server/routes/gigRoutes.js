@@ -3,10 +3,10 @@ import {
     createGig,
     getGigs,
     getGigById,
-    placeBid,
-    acceptBid,
+    applyForGig,
+    approveApplication,
     submitWork,
-    approveWork,
+    verifyWork,
     updateGig,
     deleteGig
 } from '../controllers/gigController.js';
@@ -16,24 +16,24 @@ const router = express.Router();
 
 router.route('/')
     .post(protect, authorize('organizer', 'admin'), createGig)
-    .get(getGigs);
+    .get(protect, getGigs);
 
 router.route('/:id')
     .get(getGigById)
     .put(protect, authorize('organizer', 'admin'), updateGig)
     .delete(protect, authorize('organizer', 'admin'), deleteGig);
 
-router.route('/:id/bids')
-    .post(protect, authorize('student'), placeBid);
+router.route('/:id/apply')
+    .post(protect, authorize('student'), applyForGig);
 
 // Workflow Routes
-router.route('/:id/accept/:bidId')
-    .put(protect, authorize('organizer', 'admin'), acceptBid);
+router.route('/:id/approve-app/:bidId')
+    .put(protect, authorize('organizer', 'admin'), approveApplication);
 
 router.route('/:id/submit')
     .put(protect, authorize('student'), submitWork);
 
-router.route('/:id/approve')
-    .put(protect, authorize('organizer', 'admin'), approveWork);
+router.route('/:id/verify')
+    .put(protect, authorize('organizer', 'admin'), verifyWork);
 
 export default router;

@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ allowedRoles }) => {
     const { user, loading } = useAuth();
 
     if (loading) {
@@ -14,7 +14,7 @@ const ProtectedRoute = () => {
                 color: '#64748B',
                 fontSize: '1.2rem'
             }}>
-                Loading...
+                Loading Institutional Portal...
             </div>
         );
     }
@@ -24,7 +24,12 @@ const ProtectedRoute = () => {
         return <Navigate to="/login" replace />;
     }
 
-    // If logged in, render child routes
+    // If role is not allowed, redirect to /dashboard (which handles sub-redirects) or home
+    if (allowedRoles && !allowedRoles.includes(user.role)) {
+        return <Navigate to="/dashboard" replace />;
+    }
+
+    // If logged in and role allowed, render child routes
     return <Outlet />;
 };
 

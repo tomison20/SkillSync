@@ -1,5 +1,11 @@
 import express from 'express';
-import { registerUser, loginUser, logoutUser, getUserProfile } from '../controllers/authController.js';
+import {
+    registerUser,
+    loginUser,
+    logoutUser,
+    getUserProfile,
+    requestOrganization
+} from '../controllers/authController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -10,5 +16,6 @@ router.post('/logout', logoutUser);
 
 // Ensure profile is protected here too if accessed via /api/auth/profile
 router.get('/profile', protect, getUserProfile);
+router.post('/request-org', requestOrganization);
 
 export default router;

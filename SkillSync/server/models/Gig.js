@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const gigSchema = new mongoose.Schema({
     title: { type: String, required: true, trim: true },
     description: { type: String, required: true },
-    budget: { type: Number, required: true, min: 5 }, // Minimum $5 gig
     deadline: { type: Date, required: true },
 
     // Multi-tenant Scoping

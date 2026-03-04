@@ -7,7 +7,6 @@ const CreateGig = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        budget: '',
         deadline: '',
         skillsRequired: '',
         deliverables: ''
@@ -18,24 +17,24 @@ const CreateGig = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/gigs', {
+            await api.post('/api/gigs', { // Added /api prefix for consistency if needed, checking existing calls
                 ...formData,
                 skillsRequired: formData.skillsRequired.split(',').map(s => s.trim()),
                 deliverables: formData.deliverables.split('\n')
             });
             navigate('/dashboard');
         } catch (error) {
-            alert('Error creating gig: ' + error.response?.data?.message);
+            alert('Error creating opportunity: ' + error.response?.data?.message);
         }
     };
 
     return (
         <div className="container" style={{ padding: '4rem 0', maxWidth: '800px' }}>
-            <h1 style={{ marginBottom: '2rem' }}>Post a New Opportunity</h1>
+            <h1 style={{ marginBottom: '2rem' }}>Post a New Verified Opportunity</h1>
             <div className="card">
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
-                        <label className="label">Gig Title</label>
+                        <label className="label">Opportunity Title</label>
                         <input className="input" name="title" onChange={handleChange} required placeholder="e.g. Redesign Campus App UI" />
                     </div>
 
@@ -44,15 +43,9 @@ const CreateGig = () => {
                         <textarea className="input" name="description" rows="5" onChange={handleChange} required />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-                        <div className="input-group">
-                            <label className="label">Budget ($)</label>
-                            <input type="number" className="input" name="budget" min="5" onChange={handleChange} required />
-                        </div>
-                        <div className="input-group">
-                            <label className="label">Deadline</label>
-                            <input type="date" className="input" name="deadline" onChange={handleChange} required />
-                        </div>
+                    <div className="input-group">
+                        <label className="label">Deadline</label>
+                        <input type="date" className="input" name="deadline" onChange={handleChange} required />
                     </div>
 
                     <div className="input-group">
@@ -62,14 +55,14 @@ const CreateGig = () => {
 
                     <div className="input-group">
                         <label className="label">Expected Deliverables</label>
-                        <input className="input" name="deliverables" onChange={handleChange} required placeholder="What exactly should be submitted?" />
+                        <textarea className="input" name="deliverables" rows="3" onChange={handleChange} required placeholder="What exactly should be submitted?" />
                     </div>
 
                     <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '1rem' }}>
-                        Post Gig & Lock Funds
+                        Post Verified Opportunity
                     </button>
                     <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: 'var(--color-text-muted)', textAlign: 'center' }}>
-                        Note: Funds will solely be locked upon accepting a proposal, not immediately on creation.
+                        Verification: This opportunity will be visible to students within your institution.
                     </p>
                 </form>
             </div>

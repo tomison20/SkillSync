@@ -1,18 +1,16 @@
 import Gig from '../models/Gig.js';
 import Bid from '../models/Bid.js';
-import { lockFunds, releaseFunds } from './walletController.js';
 
-// @desc    Create a new gig
+// @desc    Create a new gig (Verified Opportunity)
 // @route   POST /api/gigs
-// @access  Private (Organizer)
+// @access  Private (Organizer/Admin)
 export const createGig = async (req, res) => {
     try {
-        const { title, description, budget, deadline, skillsRequired, deliverables } = req.body;
+        const { title, description, deadline, skillsRequired, deliverables } = req.body;
 
         const gig = await Gig.create({
             title,
             description,
-            budget,
             deadline,
             skillsRequired,
             deliverables,
@@ -31,18 +29,42 @@ export const createGig = async (req, res) => {
 // @access  Public
 export const getGigs = async (req, res) => {
     try {
+        console.log('getGigs: Checking req.user...');
+        if (!req.user) {
+            console.warn('getGigs: req.user is undefined/null');
+            return res.status(401).json({ message: 'Not authorized' });
+        }
+
+        console.log('getGigs: User found, ID:', req.user._id);
+        console.log('getGigs: User organization:', req.user.organization);
+
+        if (!req.user.organization) {
+            console.warn('getGigs: req.user.organization is missing');
+            return res.status(400).json({ message: 'User organization not found' });
+        }
+
         // Scoped to organization
         const query = {
-            status: 'open',
             organization: req.user.organization
         };
 
+        // If not admin, show only open gigs or gigs relevant to them
+        if (req.user.role !== 'admin') {
+            query.status = { $in: ['open', 'assigned', 'submitted', 'completed'] };
+        }
+
+        console.log('getGigs: Built query:', JSON.stringify(query));
+
         const gigs = await Gig.find(query)
             .populate('organizer', 'name email avatar headline')
+            .populate('assignedTo', 'name email avatar')
             .sort({ createdAt: -1 });
-        res.json(gigs);
+
+        console.log('getGigs: Found', gigs?.length, 'gigs');
+        res.json(gigs || []);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('getGigs CRASH:', error);
+        res.status(500).json({ message: error.message || 'Server error' });
     }
 };
 
@@ -65,23 +87,22 @@ export const getGigById = async (req, res) => {
     }
 };
 
-// @desc    Place a bid
-// @route   POST /api/gigs/:id/bids
+// @desc    Apply for an opportunity
+// @route   POST /api/gigs/:id/apply
 // @access  Private (Student)
-export const placeBid = async (req, res) => {
+export const applyForGig = async (req, res) => {
     try {
-        const { amount, proposal } = req.body;
+        const { proposal } = req.body;
         const gig = await Gig.findById(req.params.id);
 
         if (!gig || gig.status !== 'open') {
             res.status(400);
-            throw new Error('Gig not available for bidding');
+            throw new Error('Opportunity not available for applications');
         }
 
         const bid = await Bid.create({
             gig: gig._id,
             freelancer: req.user._id,
-            amount: amount,
             proposal: proposal
         });
 
@@ -91,47 +112,42 @@ export const placeBid = async (req, res) => {
     }
 };
 
-// @desc    Accept a bid & Lock Funds
-// @route   PUT /api/gigs/:id/accept/:bidId
+// @desc    Approve an application
+// @route   PUT /api/gigs/:id/approve-app/:bidId
 // @access  Private (Organizer)
-export const acceptBid = async (req, res) => {
+export const approveApplication = async (req, res) => {
     try {
         const gig = await Gig.findById(req.params.id);
         const bid = await Bid.findById(req.params.bidId);
 
         if (!gig || !bid) {
             res.status(404);
-            throw new Error('Gig or Bid not found');
+            throw new Error('Opportunity or Application not found');
         }
 
         if (gig.organizer.toString() !== req.user._id.toString()) {
             res.status(403);
-            throw new Error('Not authorized to accept bids for this gig');
+            throw new Error('Not authorized to approve applications for this opportunity');
         }
 
-        // 1. Lock Funds
-        await lockFunds(req.user._id, bid.amount, gig._id);
-
-        // 2. Update Gig Status
+        // Update Gig Status
         gig.status = 'assigned';
         gig.assignedTo = bid.freelancer;
-        gig.budget = bid.amount; // Final agreed amount
         await gig.save();
 
-        // 3. Update Bid Status
+        // Update Application Status
         bid.status = 'accepted';
         await bid.save();
 
-        res.json({ message: 'Bid accepted, funds held in escrow', gig });
+        res.json({ message: 'Application approved and student assigned', gig });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
 
-
 // @desc    Submit Work
 // @route   PUT /api/gigs/:id/submit
-// @access  Private (Freelancer)
+// @access  Private (Student)
 export const submitWork = async (req, res) => {
     try {
         const { link, description } = req.body;
@@ -156,10 +172,10 @@ export const submitWork = async (req, res) => {
     }
 };
 
-// @desc    Approve Work & Release Funds
-// @route   PUT /api/gigs/:id/approve
+// @desc    Complete & Verify Work
+// @route   PUT /api/gigs/:id/verify
 // @access  Private (Organizer)
-export const approveWork = async (req, res) => {
+export const verifyWork = async (req, res) => {
     try {
         const gig = await Gig.findById(req.params.id);
 
@@ -173,13 +189,10 @@ export const approveWork = async (req, res) => {
             throw new Error('Work not submitted yet');
         }
 
-        // Release Funds
-        await releaseFunds(req.user._id, gig.assignedTo, gig.budget, gig._id);
-
         gig.status = 'completed';
         await gig.save();
 
-        res.json({ message: 'Work approved, funds released', gig });
+        res.json({ message: 'Work verified and marked as completed', gig });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

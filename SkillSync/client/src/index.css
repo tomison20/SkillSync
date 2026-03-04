@@ -6,7 +6,7 @@
   /* Paper White / Ivory */
   --color-surface: #FFFFFF;
   /* Pure White */
-  --color-primary: #1E293B;
+  --color-primary: var(--primary-color, #1E293B);
   /* Deep Navy / Slate 800 */
   --color-secondary: #475569;
   /* Muted Slate / Slate 600 */

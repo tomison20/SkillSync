@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import { useAuth } from '../context/AuthContext';
 
 const Volunteering = () => {
+    const { user } = useAuth();
     const [events, setEvents] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const { data } = await api.get('/events');
+                const { data } = await api.get('/api/events');
                 setEvents(data);
             } catch (error) {
                 console.error(error);
@@ -22,7 +24,9 @@ const Volunteering = () => {
         <div className="container" style={{ padding: '4rem 0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <h1>Volunteer Opportunities</h1>
-                <button className="btn btn-primary" onClick={() => navigate('/volunteering/create')}>Create Event</button>
+                {(user?.role === 'organizer' || user?.role === 'admin') && (
+                    <button className="btn btn-primary" onClick={() => navigate('/volunteering/create')}>Create Event</button>
+                )}
             </div>
 
             <div className="grid-layout">

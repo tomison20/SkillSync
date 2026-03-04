@@ -63,7 +63,7 @@ const Navbar = () => {
                                 fontWeight: location.pathname === '/gigs' ? '600' : '500',
                                 fontSize: '0.9rem',
                                 transition: 'color 0.2s'
-                            }}>Marketplace</Link>
+                            }}>Opportunities</Link>
 
                             <Link to="/volunteering" style={{
                                 textDecoration: 'none',

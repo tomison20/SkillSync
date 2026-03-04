@@ -12,7 +12,7 @@ const Login = () => {
     // Redirect if already logged in
     useEffect(() => {
         if (user) {
-            navigate('/dashboard');
+            navigate(`/dashboard/${user.role}`);
         }
     }, [navigate, user]);
 
@@ -25,8 +25,8 @@ const Login = () => {
             // 1. Update Auth Context (Handles localStorage and State)
             login(data);
 
-            // 2. Redirect handled by useEffect when 'user' state updates
-            // navigate('/dashboard'); <--- REMOVED to prevent race condition
+            // 2. Immediate Redirect
+            navigate(`/dashboard/${data.role}`);
         } catch (error) {
             console.error('Login Error:', error);
             const message = error.response?.data?.message || 'Login failed. Please check your credentials.';

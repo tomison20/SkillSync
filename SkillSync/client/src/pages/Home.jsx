@@ -1,22 +1,23 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+    const { user } = useAuth();
     // Professional Academic Image (Library / Studying)
     const heroImage = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80";
 
     return (
         <div>
-            {/* Hero Section with Background */}
+            {/* ... (Hero section setup remains unchanged) */}
             <section style={{
                 position: 'relative',
-                height: '85vh', // Tall hero
+                height: '85vh',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 overflow: 'hidden',
                 color: '#fff'
             }}>
-                {/* Background Image & Overlay */}
                 <div style={{
                     position: 'absolute',
                     top: 0,
@@ -34,11 +35,10 @@ const Home = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    background: 'rgba(15, 23, 42, 0.65)', // Navy overlay #0F172A with opacity
+                    background: 'rgba(15, 23, 42, 0.65)',
                     zIndex: 2
                 }}></div>
 
-                {/* Content */}
                 <div className="container" style={{ position: 'relative', zIndex: 3, textAlign: 'center', maxWidth: '900px' }}>
                     <span style={{
                         display: 'inline-block',
@@ -70,7 +70,7 @@ const Home = () => {
 
                     <p style={{
                         fontSize: '1.35rem',
-                        color: '#CBD5E1', // Light slate
+                        color: '#CBD5E1',
                         marginBottom: '3.5rem',
                         lineHeight: 1.6,
                         fontWeight: '300',
@@ -81,46 +81,71 @@ const Home = () => {
                     </p>
 
                     <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
-                        <Link to="/signup" className="btn" style={{
-                            padding: '1rem 2.5rem',
-                            fontSize: '1.1rem',
-                            background: '#fff',
-                            color: '#0F172A',
-                            fontWeight: '600',
-                            border: '1px solid #fff'
-                        }}>
-                            Join the Network
-                        </Link>
-                        <Link to="/gigs" className="btn" style={{
-                            padding: '1rem 2.5rem',
-                            fontSize: '1.1rem',
-                            background: 'transparent',
-                            color: '#fff',
-                            border: '1px solid rgba(255,255,255,0.5)',
-                            fontWeight: '500'
-                        }}>
-                            View Openings
-                        </Link>
+                        {user ? (
+                            <>
+                                <Link to={`/dashboard/${user.role}`} className="btn" style={{
+                                    padding: '1rem 2.5rem',
+                                    fontSize: '1.1rem',
+                                    background: '#fff',
+                                    color: '#0F172A',
+                                    fontWeight: '600',
+                                    border: '1px solid #fff'
+                                }}>
+                                    Go to Dashboard
+                                </Link>
+                                <Link to="/gigs" className="btn" style={{
+                                    padding: '1rem 2.5rem',
+                                    fontSize: '1.1rem',
+                                    background: 'transparent',
+                                    color: '#fff',
+                                    border: '1px solid rgba(255,255,255,0.5)',
+                                    fontWeight: '500'
+                                }}>
+                                    View Opportunities
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/signup" className="btn" style={{
+                                    padding: '1rem 2.5rem',
+                                    fontSize: '1.1rem',
+                                    background: '#fff',
+                                    color: '#0F172A',
+                                    fontWeight: '600',
+                                    border: '1px solid #fff'
+                                }}>
+                                    Join the Network
+                                </Link>
+                                <Link to="/gigs" className="btn" style={{
+                                    padding: '1rem 2.5rem',
+                                    fontSize: '1.1rem',
+                                    background: 'transparent',
+                                    color: '#fff',
+                                    border: '1px solid rgba(255,255,255,0.5)',
+                                    fontWeight: '500'
+                                }}>
+                                    Explore Openings
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </section>
 
-            {/* Stats / Trust Bar */}
-            <div style={{ borderBottom: '1px solid #E2E8F0', background: '#F8FAFC', padding: '2rem 0' }}>
-                <div className="container" style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-serif)' }}>500+</div>
-                        <div style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-secondary)' }}>Active Students</div>
+            {/* Institutional Trust Bar */}
+            <div style={{ borderBottom: '1px solid #E2E8F0', background: '#F8FAFC', padding: '3rem 0' }}>
+                <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem', textAlign: 'center' }}>
+                    <div style={{ padding: '0 1rem' }}>
+                        <div style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>Built for Your Institution</div>
+                        <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-secondary)' }}>Verified Access</div>
                     </div>
-                    <div style={{ height: '40px', width: '1px', background: '#E2E8F0' }}></div>
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-serif)' }}>$12k</div>
-                        <div style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-secondary)' }}>Paid in Gigs</div>
+                    <div style={{ padding: '0 1rem', borderLeft: '1px solid #E2E8F0', borderRight: '1px solid #E2E8F0' }}>
+                        <div style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>Organizer-Verified Opportunities</div>
+                        <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-secondary)' }}>Trusted Networking</div>
                     </div>
-                    <div style={{ height: '40px', width: '1px', background: '#E2E8F0' }}></div>
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-serif)' }}>50+</div>
-                        <div style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-secondary)' }}>Campus Events</div>
+                    <div style={{ padding: '0 1rem' }}>
+                        <div style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>Student Contribution Tracking</div>
+                        <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-secondary)' }}>Academic Portfolio</div>
                     </div>
                 </div>
             </div>
@@ -131,11 +156,11 @@ const Home = () => {
                     <div className="grid-layout" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4rem' }}>
                         <div>
                             <div style={{ width: 50, height: 50, background: '#EFF6FF', borderRadius: '50%', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1E3A8A' }}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                             </div>
-                            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Secure Escrow Wallet</h3>
+                            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Verified Opportunity System</h3>
                             <p style={{ color: '#64748B', lineHeight: 1.7 }}>
-                                Payments are locked in our secure escrow system the moment a gig is assigned, protecting both students and organizers.
+                                All gigs and volunteering opportunities are verified by authorized organizers within your institution to ensure transparency and trust.
                             </p>
                         </div>
                         <div>
