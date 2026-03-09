@@ -1,0 +1,74 @@
+.logo-loop-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.logo-loop-container.has-fade-out::before,
+.logo-loop-container.has-fade-out::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.logo-loop-container.has-fade-out::before {
+    left: 0;
+    background: linear-gradient(to right, var(--fade-color), transparent);
+}
+
+.logo-loop-container.has-fade-out::after {
+    right: 0;
+    background: linear-gradient(to left, var(--fade-color), transparent);
+}
+
+.logo-marquee {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    width: max-content;
+    animation: scroll var(--duration) linear infinite;
+}
+
+.logo-marquee.right {
+    animation-direction: reverse;
+}
+
+.logo-marquee:hover {
+    animation-play-state: paused;
+}
+
+.logo-item {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    font-weight: 500;
+}
+
+.logo-item.scale-on-hover:hover {
+    transform: scale(1.1);
+    color: var(--color-primary);
+}
+
+.logo-node svg {
+    width: 100%;
+    height: 100%;
+}
+
+.logo-title {
+    font-size: 1.1rem;
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(calc(-50% - (var(--gap) / 2)));
+    }
+}

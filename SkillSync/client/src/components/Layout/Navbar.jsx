@@ -62,7 +62,7 @@ const Navbar = () => {
                     alignItems: 'center',
                     gap: '0.5rem'
                 }}>
-                    <span style={{ fontSize: '1.6rem' }}>❖</span> SkillSync.
+                    <span style={{ fontSize: '1.6rem' }}>❖</span> SkillSync
                 </Link>
 
                 {/* Navigation Links */}
@@ -78,6 +78,18 @@ const Navbar = () => {
                             <Link to="/volunteering" style={navLinkStyle('/volunteering')}>
                                 Volunteering
                             </Link>
+
+                            {user.role === 'student' && (
+                                <Link to="/network" style={navLinkStyle('/network')}>
+                                    College Network
+                                </Link>
+                            )}
+
+                            {user.role === 'student' && (
+                                <Link to="/messages" style={navLinkStyle('/messages')}>
+                                    Inbox
+                                </Link>
+                            )}
 
                             <div style={{ width: '1px', height: '20px', background: '#E2E8F0' }}></div>
 
@@ -103,8 +115,12 @@ const Navbar = () => {
                                         justifyContent: 'center',
                                         fontSize: '0.8rem',
                                         fontWeight: 700,
+                                        overflow: 'hidden'
                                     }}>
-                                        {user.name?.charAt(0)?.toUpperCase()}
+                                        {user.avatar ?
+                                            <img src={user.avatar.startsWith('http') ? user.avatar : `http://localhost:5000${user.avatar}`} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                                            : user.name?.charAt(0)?.toUpperCase()
+                                        }
                                     </div>
                                 </Link>
 
@@ -140,7 +156,7 @@ const Navbar = () => {
                     )}
                 </div>
             </div>
-        </nav>
+        </nav >
     );
 };
 

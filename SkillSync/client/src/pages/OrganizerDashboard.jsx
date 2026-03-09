@@ -10,18 +10,21 @@ const OrganizerDashboard = () => {
     const [myEvents, setMyEvents] = useState([]);
     const [expandedGig, setExpandedGig] = useState(null);
     const [gigApplications, setGigApplications] = useState({});
+    const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [gigsRes, eventsRes] = await Promise.all([
+                const [gigsRes, eventsRes, profileRes] = await Promise.all([
                     api.get('/gigs'),
-                    api.get('/events')
+                    api.get('/events'),
+                    api.get('/auth/profile')
                 ]);
                 // Filter gigs created by this organizer
                 setMyOpportunities(gigsRes.data.filter(g => g.organizer?._id === user._id));
                 setMyEvents(eventsRes.data.filter(e => e.organizer?._id === user._id || e.organizer === user._id));
+                setUserProfile(profileRes.data);
             } catch (error) {
                 console.error('Organizer dashboard fetch error:', error);
             } finally {
@@ -129,6 +132,9 @@ const OrganizerDashboard = () => {
                             <Link to="/volunteering/create" className="btn" style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
                                 + New Event
                             </Link>
+                            <Link to="/dashboard/organizer/profile" className="btn" style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', textDecoration: 'none' }}>
+                                Edit Profile
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -137,6 +143,26 @@ const OrganizerDashboard = () => {
             {/* Body */}
             <div className="dashboard-body">
                 <div className="container">
+                    {/* Profile Card */}
+                    {userProfile && (
+                        <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #7C3AED' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+                                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, #7C3AED, #6D28D9)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
+                                    {userProfile.avatar ? <img src={`http://localhost:5000${userProfile.avatar}`} alt={userProfile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : userProfile.name?.charAt(0)}
+                                </div>
+                                <div style={{ flex: 1, minWidth: '200px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
+                                        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{userProfile.name}</h3>
+                                        <span className="badge badge-success" style={{ fontSize: '0.65rem' }}>✓ Verified Organizer</span>
+                                    </div>
+                                    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+                                        {userProfile.headline || 'Opportunity Provider'}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Stats Row */}
                     <div className="grid-3" style={{ marginBottom: '1.5rem' }}>
                         <div className="card stat-card animate-slide-up stagger-1">

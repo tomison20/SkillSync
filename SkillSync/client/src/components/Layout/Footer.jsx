@@ -6,8 +6,8 @@ const Footer = () => {
             padding: '2rem 0',
             marginTop: 'auto'
         }}>
-            <div className="container" style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-                <p>&copy; {new Date().getFullYear()} SkillSync. All rights reserved.</p>
+            <div className="container" style={{ textAlign: 'center', opacity: 0.8, fontSize: '0.9rem' }}>
+                <p>&copy; {new Date().getFullYear()} SkillSync All rights reserved.</p>
             </div>
         </footer>
     );

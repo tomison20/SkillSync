@@ -11,11 +11,16 @@ const StudentProfile = () => {
     const [form, setForm] = useState({
         headline: '',
         bio: '',
+        course: '',
+        avatar: '',
+        isDiscoverable: false,
         skills: '',
         github: '',
         linkedin: '',
         twitter: '',
-        portfolioWebsite: ''
+        portfolioWebsite: '',
+        customLinkUrl: '',
+        customLinkName: ''
     });
 
     useEffect(() => {
@@ -26,11 +31,16 @@ const StudentProfile = () => {
                 setForm({
                     headline: data.headline || '',
                     bio: data.bio || '',
+                    course: data.course || '',
+                    avatar: data.avatar || '',
+                    isDiscoverable: data.isDiscoverable || false,
                     skills: (data.skills || []).join(', '),
                     github: data.github || '',
                     linkedin: data.linkedin || '',
                     twitter: data.twitter || '',
-                    portfolioWebsite: data.portfolioWebsite || ''
+                    portfolioWebsite: data.portfolioWebsite || '',
+                    customLinkUrl: data.customLinkUrl || '',
+                    customLinkName: data.customLinkName || ''
                 });
             } catch (error) {
                 console.error('Failed to fetch profile:', error);
@@ -50,9 +60,32 @@ const StudentProfile = () => {
                 skills: form.skills.split(',').map(s => s.trim()).filter(Boolean)
             });
             setProfile(data);
+            login({ ...data, token: user.token });
             alert('Profile updated!');
         } catch (error) {
             alert(error.response?.data?.message || 'Failed to update');
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const uploadFileHandler = async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            setSaving(true);
+            const { data } = await api.post('/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            // Update the form state with the returned path
+            setForm({ ...form, avatar: data.url });
+        } catch (error) {
+            console.error(error);
+            alert('Image upload failed');
         } finally {
             setSaving(false);
         }
@@ -92,6 +125,27 @@ const StudentProfile = () => {
 
                         {/* Basic Info */}
                         <div className="card" style={{ marginBottom: '1.5rem' }}>
+                            <h3 style={{ margin: '0 0 1.25rem', fontSize: '1.1rem' }}>🖼️ Profile Picture</h3>
+                            <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                {form.avatar ? (
+                                    <img
+                                        src={`http://localhost:5000${form.avatar}`}
+                                        alt="Avatar Preview"
+                                        style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-primary)' }}
+                                    />
+                                ) : (
+                                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '2rem' }}>
+                                        👤
+                                    </div>
+                                )}
+                                <div>
+                                    <input type="file" onChange={uploadFileHandler} style={{ display: 'block', marginBottom: '0.5rem', color: 'rgba(255,255,255,0.8)' }} />
+                                    <small style={{ color: 'rgba(255,255,255,0.5)' }}>Recommended: Square image, max 2MB (jpg/png)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="card" style={{ marginBottom: '1.5rem' }}>
                             <h3 style={{ margin: '0 0 1.25rem', fontSize: '1.1rem' }}>📝 Academic Info</h3>
                             <div className="input-group">
                                 <label className="label">Headline</label>
@@ -102,8 +156,42 @@ const StudentProfile = () => {
                                 <textarea className="input textarea" rows="3" value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} placeholder="Tell us about your academic interests..." />
                             </div>
                             <div className="input-group">
+                                <label className="label">Course / Class</label>
+                                <input className="input" value={form.course} onChange={e => setForm({ ...form, course: e.target.value })} placeholder="e.g. B.Tech Computer Science - 3rd Year" />
+                            </div>
+                            <div className="input-group">
                                 <label className="label">Skills (comma separated)</label>
                                 <input className="input" value={form.skills} onChange={e => setForm({ ...form, skills: e.target.value })} placeholder="React, Python, Design..." />
+                            </div>
+                        </div>
+
+                        {/* Privacy & Discovery */}
+                        <div className="card" style={{ marginBottom: '1.5rem' }}>
+                            <h3 style={{ margin: '0 0 1.25rem', fontSize: '1.1rem' }}>🛡️ Privacy & Discovery</h3>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                <div>
+                                    <h4 style={{ margin: '0 0 0.25rem', fontSize: '1rem', color: 'white' }}>College Network Discoverability</h4>
+                                    <p style={{ margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>Allow my profile to be discovered by others in my college.</p>
+                                </div>
+                                <label className="switch" style={{ position: 'relative', display: 'inline-block', width: '50px', height: '28px' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={form.isDiscoverable}
+                                        onChange={e => setForm({ ...form, isDiscoverable: e.target.checked })}
+                                        style={{ opacity: 0, width: 0, height: 0 }}
+                                    />
+                                    <span style={{
+                                        position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                                        backgroundColor: form.isDiscoverable ? '#007BFF' : '#333',
+                                        transition: '.4s', borderRadius: '34px'
+                                    }}>
+                                        <span style={{
+                                            position: 'absolute', content: '""', height: '20px', width: '20px',
+                                            left: form.isDiscoverable ? '26px' : '4px', bottom: '4px',
+                                            backgroundColor: 'white', transition: '.4s', borderRadius: '50%'
+                                        }}></span>
+                                    </span>
+                                </label>
                             </div>
                         </div>
 
@@ -131,12 +219,23 @@ const StudentProfile = () => {
                                 </label>
                                 <input className="input" value={form.twitter} onChange={e => setForm({ ...form, twitter: e.target.value })} placeholder="https://x.com/username" />
                             </div>
-                            <div className="input-group" style={{ marginBottom: 0 }}>
+                            <div className="input-group" style={{ marginBottom: '1rem' }}>
                                 <label className="label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" /></svg>
                                     Portfolio Website
                                 </label>
                                 <input className="input" value={form.portfolioWebsite} onChange={e => setForm({ ...form, portfolioWebsite: e.target.value })} placeholder="https://your-portfolio.com" />
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '1rem', marginBottom: 0 }}>
+                                <div className="input-group" style={{ flex: 1, marginBottom: 0 }}>
+                                    <label className="label">Custom Link Name</label>
+                                    <input className="input" value={form.customLinkName} onChange={e => setForm({ ...form, customLinkName: e.target.value })} placeholder="e.g. Dribbble, Medium..." />
+                                </div>
+                                <div className="input-group" style={{ flex: 2, marginBottom: 0 }}>
+                                    <label className="label">Custom Link URL</label>
+                                    <input className="input" value={form.customLinkUrl} onChange={e => setForm({ ...form, customLinkUrl: e.target.value })} placeholder="https://..." />
+                                </div>
                             </div>
                         </div>
 

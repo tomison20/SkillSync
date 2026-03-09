@@ -34,9 +34,10 @@ const Profile = () => {
                             width: 100, height: 100, borderRadius: 'var(--radius-sm)',
                             background: 'var(--color-primary)', display: 'flex',
                             alignItems: 'center', justifyContent: 'center',
-                            fontSize: '2.5rem', color: '#fff', fontWeight: 'bold'
+                            fontSize: '2.5rem', color: '#fff', fontWeight: 'bold',
+                            overflow: 'hidden'
                         }}>
-                            {user.name.charAt(0)}
+                            {user.avatar ? <img src={`http://localhost:5000${user.avatar}`} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : user.name.charAt(0)}
                         </div>
                         <div>
                             <h1 style={{ margin: 0, fontSize: '2.25rem' }}>{user.name}</h1>

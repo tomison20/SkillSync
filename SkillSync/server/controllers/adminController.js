@@ -87,3 +87,62 @@ export const manageOrgRequest = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// @desc    Get platform stats
+// @route   GET /api/admin/stats
+// @access  Private (Admin only)
+export const getPlatformStats = async (req, res) => {
+    try {
+        const students = await User.countDocuments({ role: 'student' });
+        const organizers = await User.countDocuments({ role: 'organizer' });
+        const organizations = await Organization.countDocuments();
+        const pendingRequests = await OrganizationRequest.countDocuments({ status: 'pending' });
+
+        res.json({
+            students,
+            organizers,
+            organizations,
+            pendingRequests
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get all non-admin users
+// @route   GET /api/admin/users
+// @access  Private (Admin only)
+export const getUsers = async (req, res) => {
+    try {
+        const users = await User.find({ role: { $ne: 'admin' } })
+            .select('-password')
+            .populate('organization', 'name uniqueCode')
+            .sort('-createdAt');
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Toggle user status (disable/enable)
+// @route   PUT /api/admin/users/:id/disable
+// @access  Private (Admin only)
+export const toggleUserStatus = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (user.role === 'admin') {
+            return res.status(400).json({ message: 'Cannot disable another administrator' });
+        }
+
+        user.isDisabled = !user.isDisabled;
+        await user.save();
+
+        res.json({ message: `User account has been ${user.isDisabled ? 'disabled' : 'enabled'}`, isDisabled: user.isDisabled });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

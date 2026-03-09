@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema({
     // Enhanced Profile Fields
     headline: { type: String, default: '' }, // e.g., "Computer Science Sophomore | React Developer"
     bio: { type: String, default: '' },
+    course: { type: String, default: '' },
+    isDiscoverable: { type: Boolean, default: false },
+    isDisabled: { type: Boolean, default: false }, // For Admin controls
     skills: [{ type: String }],
     avatar: { type: String }, // URL to profile picture
 
@@ -40,11 +43,17 @@ const userSchema = new mongoose.Schema({
 
     portfolio: [portfolioItemSchema],
 
+    // Social Network Graph
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+
     // Social Links
     github: { type: String, default: '' },
     linkedin: { type: String, default: '' },
     twitter: { type: String, default: '' },
     portfolioWebsite: { type: String, default: '' },
+    customLinkUrl: { type: String, default: '' },
+    customLinkName: { type: String, default: '' },
 
     // Verification
     isVerified: { type: Boolean, default: false }, // For "Institutional" trust

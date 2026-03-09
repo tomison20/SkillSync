@@ -39,7 +39,7 @@ const Home = () => {
                     zIndex: 2
                 }}></div>
 
-                <div className="container" style={{ position: 'relative', zIndex: 3, textAlign: 'center', maxWidth: '900px' }}>
+                <div className="container" style={{ position: 'relative', zIndex: 3, textAlign: 'center', maxWidth: '900px', marginTop: '4rem' }}>
                     <span style={{
                         display: 'inline-block',
                         padding: '0.5rem 1rem',
@@ -115,16 +115,6 @@ const Home = () => {
                                     border: '1px solid #fff'
                                 }}>
                                     Join the Network
-                                </Link>
-                                <Link to="/gigs" className="btn" style={{
-                                    padding: '1rem 2.5rem',
-                                    fontSize: '1.1rem',
-                                    background: 'transparent',
-                                    color: '#fff',
-                                    border: '1px solid rgba(255,255,255,0.5)',
-                                    fontWeight: '500'
-                                }}>
-                                    Explore Openings
                                 </Link>
                             </>
                         )}

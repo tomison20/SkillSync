@@ -19,7 +19,12 @@ import CreateEvent from './pages/CreateEvent';
 import GigDetails from './pages/GigDetails';
 import Profile from './pages/Profile';
 import OrganizerVolunteers from './pages/OrganizerVolunteers';
+import OrganizerProfile from './pages/OrganizerProfile';
 import StudentProfile from './pages/StudentProfile';
+import Network from './pages/Network';
+import StudentPublicProfile from './pages/StudentPublicProfile';
+import Inbox from './pages/Inbox';
+import Chat from './pages/Chat';
 
 function App() {
   return (
@@ -47,11 +52,16 @@ function App() {
               <Route element={<ProtectedRoute allowedRoles={['student']} />}>
                 <Route path="/dashboard/student" element={<StudentDashboard />} />
                 <Route path="/dashboard/student/profile" element={<StudentProfile />} />
+                <Route path="/network" element={<Network />} />
+                <Route path="/network/student/:id" element={<StudentPublicProfile />} />
+                <Route path="/messages" element={<Inbox />} />
+                <Route path="/chat/:id" element={<Chat />} />
               </Route>
 
               {/* Organizer Only Routes */}
               <Route element={<ProtectedRoute allowedRoles={['organizer', 'admin']} />}>
                 <Route path="/dashboard/organizer" element={<OrganizerDashboard />} />
+                <Route path="/dashboard/organizer/profile" element={<OrganizerProfile />} />
                 <Route path="/dashboard/organizer/applications" element={<OrganizerVolunteers />} />
                 <Route path="/gigs/create" element={<CreateGig />} />
                 <Route path="/volunteering/create" element={<CreateEvent />} />

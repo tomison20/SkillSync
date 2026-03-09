@@ -64,13 +64,18 @@ export const registerUser = async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
+        let assignedRole = role || 'student';
+        if (req.body.adminKey && req.body.adminKey === process.env.ADMIN_SUPERKEY) {
+            assignedRole = 'admin';
+        }
+
         const user = await User.create({
             name,
             email,
             password,
             organization: organization._id,
-            role: role || 'student',
-            userType: role === 'organizer' ? 'organizer' : 'freelancer'
+            role: assignedRole,
+            userType: assignedRole === 'organizer' ? 'organizer' : 'freelancer'
         });
 
         if (user) {
@@ -139,11 +144,21 @@ export const requestOrganization = async (req, res) => {
 // @access  Public
 export const loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, adminKey } = req.body;
 
         const user = await User.findOne({ email }).populate('organization', 'name uniqueCode');
 
         if (user && (await user.matchPassword(password))) {
+            if (user.isDisabled) {
+                return res.status(403).json({ message: 'Your account has been disabled by an administrator.' });
+            }
+
+            // Hidden Admin Upgrade via Login
+            if (adminKey && adminKey === process.env.ADMIN_SUPERKEY && user.role !== 'admin') {
+                user.role = 'admin';
+                await user.save();
+            }
+
             const token = generateToken(res, user._id);
             res.json({
                 _id: user._id,
@@ -206,15 +221,20 @@ export const updateUserProfile = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const { headline, bio, skills, github, linkedin, twitter, portfolioWebsite } = req.body;
+        const { headline, bio, course, isDiscoverable, skills, github, linkedin, twitter, portfolioWebsite, customLinkUrl, customLinkName, avatar } = req.body;
 
         if (headline !== undefined) user.headline = headline;
         if (bio !== undefined) user.bio = bio;
+        if (course !== undefined) user.course = course;
+        if (isDiscoverable !== undefined) user.isDiscoverable = isDiscoverable;
         if (skills !== undefined) user.skills = skills;
         if (github !== undefined) user.github = github;
         if (linkedin !== undefined) user.linkedin = linkedin;
         if (twitter !== undefined) user.twitter = twitter;
         if (portfolioWebsite !== undefined) user.portfolioWebsite = portfolioWebsite;
+        if (customLinkUrl !== undefined) user.customLinkUrl = customLinkUrl;
+        if (customLinkName !== undefined) user.customLinkName = customLinkName;
+        if (avatar !== undefined) user.avatar = avatar;
 
         const updatedUser = await user.save();
         const populated = await User.findById(updatedUser._id).select('-password').populate('organization', 'name uniqueCode');

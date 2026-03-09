@@ -14,6 +14,8 @@ import portfolioRoutes from './routes/portfolioRoutes.js';
 import achievementRoutes from './routes/achievementRoutes.js';
 import participationRoutes from './routes/participationRoutes.js';
 import volunteerRoutes from './routes/volunteerRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
+import messageRoutes from './routes/messageRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -48,6 +50,8 @@ app.use('/api/portfolios', portfolioRoutes);
 app.use('/api/achievements', achievementRoutes);
 app.use('/api/participation', participationRoutes);
 app.use('/api/volunteers', volunteerRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/messages', messageRoutes);
 
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
