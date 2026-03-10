@@ -39,7 +39,7 @@ const Signup = () => {
         <div className="container" style={{ padding: '6rem 0', maxWidth: '500px' }}>
             <div className="card" style={{ padding: '3rem' }}>
                 <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem', textAlign: 'center' }}>Join SkillSync</h1>
-                <p style={{ textAlign: 'center', color: '#64748B', marginBottom: '2rem' }}>
+                <p style={{ textAlign: 'center', color: '#829485', marginBottom: '2rem' }}>
                     Create your verified academic profile.
                 </p>
 
@@ -77,7 +77,7 @@ const Signup = () => {
                 </form>
 
                 <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>
-                    <span style={{ color: '#64748B' }}>Already have an account? </span>
+                    <span style={{ color: '#829485' }}>Already have an account? </span>
                     <Link to="/login" style={{ fontWeight: '600' }}>Sign in instead</Link>
                 </div>
             </div>

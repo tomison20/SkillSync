@@ -116,7 +116,7 @@ const OrganizerProfile = () => {
                     <form onSubmit={handleSubmit}>
 
                         {/* Basic Info */}
-                        <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #7C3AED' }}>
+                        <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #2D5A3D' }}>
                             <h3 style={{ margin: '0 0 1.25rem', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '8px' }}><FaImage /> Organizational Setup</h3>
                             <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 {form.avatar ? (

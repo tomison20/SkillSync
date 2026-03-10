@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
-import { FaCalendarAlt, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaEnvelope } from 'react-icons/fa';
 
 const EventDetails = () => {
     const { id } = useParams();
@@ -91,12 +91,12 @@ const EventDetails = () => {
             <div className="grid-layout" style={{ gridTemplateColumns: '2fr 1fr' }}>
                 <div className="card">
                     <h3>Description</h3>
-                    <p style={{ whiteSpace: 'pre-wrap', marginBottom: '2rem', color: '#334155' }}>{event.description}</p>
+                    <p style={{ whiteSpace: 'pre-wrap', marginBottom: '2rem', color: '#3D6B4A' }}>{event.description}</p>
 
                     <h3>Available Roles</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
                         {event.roles?.map((role, idx) => (
-                            <div key={idx} style={{ padding: '1.5rem', background: '#F8FAFC', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div key={idx} style={{ padding: '1.5rem', background: '#F0F5EC', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div>
                                     <h4 style={{ margin: '0 0 0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         {role.name}
@@ -142,7 +142,7 @@ const EventDetails = () => {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
                                 {event.coOrganizers.map(coOrg => (
                                     <div key={coOrg._id} style={{ display: 'flex', alignItems: 'center' }}>
-                                        <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'linear-gradient(135deg, #3B82F6, #2563EB)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold', fontSize: '0.8rem' }}>
+                                        <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'linear-gradient(135deg, #4A7C59, #3D6B4A)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold', fontSize: '0.8rem' }}>
                                             {coOrg.name?.charAt(0) || '?'}
                                         </div>
                                         <div>
@@ -203,7 +203,7 @@ const EventDetails = () => {
                             {userRegistration?.attendanceHash && (
                                 <div style={{ background: 'white', padding: '1rem', borderRadius: '8px', border: '1px dashed #10B981', textAlign: 'center' }}>
                                     <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>Your Attendance Hash</p>
-                                    <code style={{ background: '#F8FAFC', padding: '0.5rem', borderRadius: '4px', wordBreak: 'break-all', fontSize: '0.8rem', display: 'block' }}>
+                                    <code style={{ background: '#F0F5EC', padding: '0.5rem', borderRadius: '4px', wordBreak: 'break-all', fontSize: '0.8rem', display: 'block' }}>
                                         {userRegistration.attendanceHash}
                                     </code>
                                 </div>
@@ -248,7 +248,7 @@ const EventDetails = () => {
                                     ))}
                                 </div>
                             ) : (
-                                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textAlign: 'center', padding: '1rem', background: '#F8FAFC', borderRadius: '4px' }}>
+                                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textAlign: 'center', padding: '1rem', background: '#F0F5EC', borderRadius: '4px' }}>
                                     No volunteers have registered yet.
                                 </p>
                             )}

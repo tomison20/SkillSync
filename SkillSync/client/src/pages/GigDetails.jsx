@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
+import { FaEnvelope } from 'react-icons/fa';
 
 const GigDetails = () => {
     const { id } = useParams();
@@ -91,14 +92,14 @@ const GigDetails = () => {
             <div className="grid-layout" style={{ gridTemplateColumns: '2fr 1fr' }}>
                 <div className="card">
                     <h3>Description</h3>
-                    <p style={{ whiteSpace: 'pre-wrap', marginBottom: '2rem', color: '#334155' }}>{gig.description}</p>
+                    <p style={{ whiteSpace: 'pre-wrap', marginBottom: '2rem', color: '#3D6B4A' }}>{gig.description}</p>
 
                     <h3>Expected Deliverables</h3>
-                    <p style={{ color: '#334155', marginBottom: '2rem' }}>{gig.deliverables}</p>
+                    <p style={{ color: '#3D6B4A', marginBottom: '2rem' }}>{gig.deliverables}</p>
 
                     {/* Workflow: Submission (Student) */}
                     {isAssigned && gig.status === 'assigned' && (
-                        <div style={{ marginTop: '2rem', padding: '2rem', background: '#F8FAFC', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}>
+                        <div style={{ marginTop: '2rem', padding: '2rem', background: '#F0F5EC', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', margin: 0 }}>Provide a link to your completed project or documentation.</p>
                                 {gig.organizer?.email && (

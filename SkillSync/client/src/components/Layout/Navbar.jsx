@@ -37,13 +37,15 @@ const Navbar = () => {
 
     return (
         <nav style={{
-            background: 'var(--color-surface)',
+            background: 'rgba(247,249,245,0.96)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
             borderBottom: '1px solid var(--color-border)',
             padding: '0.85rem 0',
             position: 'sticky',
             top: 0,
-            zIndex: 1000,
-            boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+            zIndex: 200,
+            boxShadow: '0 2px 8px rgba(26,46,29,0.08), 0 1px 2px rgba(26,46,29,0.04)'
         }}>
             <div className="container" style={{
                 display: 'flex',
@@ -55,7 +57,7 @@ const Navbar = () => {
                     fontFamily: 'var(--font-serif)',
                     fontSize: '1.4rem',
                     fontWeight: '700',
-                    color: 'var(--color-primary)',
+                    color: '#4A7C59',
                     letterSpacing: '-0.025em',
                     textDecoration: 'none',
                     display: 'flex',
@@ -91,7 +93,7 @@ const Navbar = () => {
                                 </Link>
                             )}
 
-                            <div style={{ width: '1px', height: '20px', background: '#E2E8F0' }}></div>
+                            <div style={{ width: '1px', height: '20px', background: '#D8EAD0' }}></div>
 
                             <Link to={getDashboardPath()} style={navLinkStyle('/dashboard')}>
                                 Dashboard
@@ -105,10 +107,10 @@ const Navbar = () => {
                                         height: 30,
                                         borderRadius: '50%',
                                         background: user.role === 'organizer'
-                                            ? 'linear-gradient(135deg, #7C3AED, #6D28D9)'
+                                            ? 'linear-gradient(135deg, #2D5A3D, #1E3D2A)'
                                             : user.role === 'admin'
-                                                ? 'linear-gradient(135deg, #374151, #1F2937)'
-                                                : 'linear-gradient(135deg, #3B82F6, #2563EB)',
+                                                ? 'linear-gradient(135deg, #1A2E1D, #2D5A3D)'
+                                                : 'linear-gradient(135deg, #4A7C59, #3D6B4A)',
                                         color: 'white',
                                         display: 'flex',
                                         alignItems: 'center',

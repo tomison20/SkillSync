@@ -108,7 +108,7 @@ const StudentPublicProfile = () => {
                                 >
                                     {isFollowing ? <><FaUserCheck /> Following</> : <><FaUserPlus /> Follow</>}
                                 </button>
-                                <Link to={`/chat/${profile._id}`} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: '#0F172A' }}>
+                                <Link to={`/chat/${profile._id}`} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: '#1A2E1D' }}>
                                     <FaEnvelope /> Message
                                 </Link>
                             </div>
@@ -128,9 +128,9 @@ const StudentPublicProfile = () => {
                             <div style={{ width: '100%', maxWidth: '600px', marginLeft: '-15px' }}>
                                 <LogoLoop
                                     logos={[
-                                        ...(profile.github ? [{ node: <FaGithub size={24} color="#1E293B" />, title: 'GitHub', href: profile.github }] : []),
+                                        ...(profile.github ? [{ node: <FaGithub size={24} color="#2D5A3D" />, title: 'GitHub', href: profile.github }] : []),
                                         ...(profile.linkedin ? [{ node: <FaLinkedin size={24} color="#0A66C2" />, title: 'LinkedIn', href: profile.linkedin }] : []),
-                                        ...(profile.twitter ? [{ node: <FaXTwitter size={24} color="#1E293B" />, title: 'X', href: profile.twitter }] : []),
+                                        ...(profile.twitter ? [{ node: <FaXTwitter size={24} color="#2D5A3D" />, title: 'X', href: profile.twitter }] : []),
                                         ...(profile.portfolioWebsite ? [{ node: <FaGlobe size={24} color="#059669" />, title: 'Portfolio', href: profile.portfolioWebsite }] : []),
                                         ...(profile.resume ? [{ node: <FaFilePdf size={24} color="#DC2626" />, title: 'Resume', href: `http://localhost:5000${profile.resume}` }] : []),
                                         ...(profile.customLinkUrl ? [{ node: <FaLink size={24} color="#6366F1" />, title: profile.customLinkName || 'Link', href: profile.customLinkUrl }] : [])
@@ -195,7 +195,7 @@ const StudentPublicProfile = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {profile.achievements.map((ach, index) => (
                                 <div key={ach._id || index} style={{ padding: '1rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(59, 130, 246, 0.1)', color: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(74, 124, 89, 0.1)', color: '#4A7C59', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                         <FaTrophy size={20} />
                                     </div>
                                     <div>

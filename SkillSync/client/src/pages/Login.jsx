@@ -38,7 +38,7 @@ const Login = () => {
         <div className="container" style={{ padding: '6rem 0', maxWidth: '450px' }}>
             <div className="card" style={{ padding: '3rem' }}>
                 <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem', textAlign: 'center' }}>Welcome Back</h1>
-                <p style={{ textAlign: 'center', color: '#64748B', marginBottom: '2rem' }}>
+                <p style={{ textAlign: 'center', color: '#829485', marginBottom: '2rem' }}>
                     Access your institutional account.
                 </p>
 
@@ -69,7 +69,7 @@ const Login = () => {
                 </form>
 
                 <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>
-                    <span style={{ color: '#64748B' }}>New to SkillSync? </span>
+                    <span style={{ color: '#829485' }}>New to SkillSync? </span>
                     <Link to="/signup" style={{ fontWeight: '600' }}>Create an account</Link>
                 </div>
             </div>

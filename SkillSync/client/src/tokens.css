@@ -1,0 +1,165 @@
+/*
+ * ══════════════════════════════════════════════════════════════════════
+ * SKILLSYNC DESIGN SYSTEM — tokens.css
+ * ══════════════════════════════════════════════════════════════════════
+ *
+ * Brand Essence:
+ * SkillSync is a fresh, modern academic marketplace where deep forest
+ * greens ground the interface in natural authority and sage accents
+ * breathe life into every interaction. Warm white surfaces and soft
+ * mint tints create an airy, inviting atmosphere — like sunlight
+ * through a campus canopy. Playfair Display serif headings lend
+ * gravitas to every section title, balanced by Inter's clean geometry
+ * in functional text. The result is a premium edtech platform that
+ * feels simultaneously professional and refreshingly alive.
+ *
+ * ══════════════════════════════════════════════════════════════════════
+ */
+
+/* ═══ Google Fonts Import ═══════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   CUSTOM PROPERTIES — :root
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+
+  /* ── SURFACE & BACKGROUND ─────────────────────────────────────── */
+  --color-bg:           #F7F9F5;
+  --color-bg-base:      #F7F9F5;
+  --color-bg-card:      #FFFFFF;
+  --color-bg-elevated:  #F0F5EC;
+  --color-bg-subtle:    #E8F5BD;
+  --color-surface:      #FFFFFF;
+  --surface-card:       #F7F9F5;
+  --surface-subtle:     #FFFFFF;
+
+  /* ── BORDERS ──────────────────────────────────────────────────── */
+  --color-border:       #D8EAD0;
+  --color-border-dark:  #B8D4AE;
+  --border-default:     #D8EAD0;
+  --border-strong:      #B8D4AE;
+  --border-subtle:      #E8F0E4;
+
+  /* ── PRIMARY ACCENT — Forest Green ────────────────────────────── */
+  --color-accent:       #4A7C59;
+  --color-accent-hover: #3D6B4A;
+  --color-accent-light: #C7EABB;
+  --color-accent-glow:  rgba(74, 124, 89, 0.15);
+  --color-primary:      #1A2E1D;
+  --color-secondary:    #4A5E4D;
+
+  /* ── GREEN SCALE ──────────────────────────────────────────────── */
+  --color-mid:          #84B179;
+  --color-mid-light:    #A2CB8B;
+  --color-mint:         #C7EABB;
+  --color-pale:         #E8F5BD;
+
+  --accent-50:   #F0F5EC;
+  --accent-100:  #E0EDDA;
+  --accent-200:  #C7EABB;
+  --accent-300:  #A2CB8B;
+  --accent-400:  #84B179;
+  --accent-500:  #4A7C59;
+  --accent-600:  #3D6B4A;
+  --accent-700:  #2D5A3D;
+  --accent-800:  #1E3D2A;
+  --accent-900:  #1A2E1D;
+
+  --accent-hover:      var(--accent-600);
+  --accent-active:     var(--accent-700);
+  --accent-focus:      var(--accent-500);
+  --accent-focus-ring: rgba(74, 124, 89, 0.35);
+
+  /* ── TEXT COLORS ──────────────────────────────────────────────── */
+  --color-text-main:    #1A2E1D;
+  --color-text-primary: #1A2E1D;
+  --color-text-secondary: #4A5E4D;
+  --color-text-muted:   #829485;
+  --text-primary:       #1A2E1D;
+  --text-secondary:     #4A5E4D;
+  --text-muted:         #829485;
+  --text-faint:         #A3B5A6;
+  --text-on-dark:       #FFFFFF;
+  --text-on-dark-muted: rgba(255, 255, 255, 0.75);
+
+  /* ── SEMANTIC COLORS ──────────────────────────────────────────── */
+  --color-success:    #2E7D32;
+  --color-error:      #C0392B;
+  --color-warning:    #B7770D;
+  --color-info:       #1A4A7C;
+
+  --success-bg: #F0FAF0; --success-text: #2E7D32; --success-border: #A8D5A8;
+  --warning-bg: #FFFBF0; --warning-text: #B7770D; --warning-border: #F5E0A0;
+  --error-bg:   #FFF5F5; --error-text:   #C0392B; --error-border:   #F5C6C6;
+  --info-bg:    #F0F7FF; --info-text:    #1A4A7C; --info-border:    #BDD5F5;
+
+  /* ── TYPOGRAPHY ───────────────────────────────────────────────── */
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --text-xs:   clamp(0.64rem, 0.6rem + 0.15vw, 0.72rem);
+  --text-sm:   clamp(0.75rem, 0.72rem + 0.15vw, 0.8rem);
+  --text-base: clamp(0.875rem, 0.84rem + 0.18vw, 0.95rem);
+  --text-md:   clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg:   clamp(1.125rem, 1.05rem + 0.35vw, 1.3rem);
+  --text-xl:   clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-2xl:  clamp(1.5rem, 1.35rem + 0.7vw, 1.875rem);
+  --text-3xl:  clamp(1.875rem, 1.6rem + 1.2vw, 2.5rem);
+  --text-4xl:  clamp(2.25rem, 1.9rem + 1.5vw, 3rem);
+
+  --leading-display:  1.1;
+  --leading-heading:  1.4;
+  --leading-body:     1.6;
+  --leading-relaxed:  1.8;
+
+  --tracking-tighter: -0.02em;
+  --tracking-tight:   -0.01em;
+  --tracking-normal:   0;
+  --tracking-wide:     0.02em;
+  --tracking-wider:    0.05em;
+  --tracking-widest:   0.07em;
+
+  /* ── SHADOWS (green-tinted) ───────────────────────────────────── */
+  --shadow-xs:  0 1px 3px rgba(26,46,29,0.06);
+  --shadow-sm:  0 2px 8px rgba(26,46,29,0.08), 0 1px 2px rgba(26,46,29,0.04);
+  --shadow-md:  0 4px 16px rgba(26,46,29,0.10), 0 2px 4px rgba(26,46,29,0.05);
+  --shadow-lg:  0 8px 30px rgba(26,46,29,0.12), 0 4px 8px rgba(26,46,29,0.06), 0 0 0 1px rgba(74,124,89,0.05);
+  --shadow-xl:  0 16px 48px rgba(26,46,29,0.14), 0 8px 16px rgba(26,46,29,0.08), 0 0 0 1px rgba(74,124,89,0.08);
+  --shadow-glow: 0 0 0 3px rgba(74,124,89,0.18), 0 4px 16px rgba(74,124,89,0.22);
+
+  --shadow-subtle:   var(--shadow-xs);
+  --shadow-card:     var(--shadow-sm);
+  --shadow-elevated: var(--shadow-lg);
+
+  /* ── SPACING (4px grid) ───────────────────────────────────────── */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
+  --space-32: 128px;
+
+  /* ── RADIUS ───────────────────────────────────────────────────── */
+  --radius-none: 0;
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* ── MOTION ───────────────────────────────────────────────────── */
+  --duration-snap:       100ms;
+  --duration-micro:      150ms;
+  --duration-transition: 200ms;
+  --duration-entrance:   400ms;
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Z-INDEX ──────────────────────────────────────────────────── */
+  --z-base: 0;  --z-raised: 10;  --z-dropdown: 100;
+  --z-sticky: 200;  --z-overlay: 300;  --z-modal: 400;  --z-toast: 500;
+}

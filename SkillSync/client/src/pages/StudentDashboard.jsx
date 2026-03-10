@@ -203,16 +203,16 @@ const StudentDashboard = () => {
                             <div className="stat-label">Activities Completed</div>
                         </div>
                         <div className="card stat-card animate-slide-up stagger-3">
-                            <div className="stat-value" style={{ color: '#7C3AED' }}>{stats.contributionScore}</div>
+                            <div className="stat-value" style={{ color: '#2D5A3D' }}>{stats.contributionScore}</div>
                             <div className="stat-label">SkillSync Score</div>
                         </div>
                     </div>
 
                     {/* Profile Card with Social Icons */}
                     {userProfile && (
-                        <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #3B82F6' }}>
+                        <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #4A7C59' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-                                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
+                                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, #4A7C59, #2D5A3D)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
                                     {userProfile.avatar ? <img src={`http://localhost:5000${userProfile.avatar}`} alt={userProfile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : userProfile.name?.charAt(0)}
                                 </div>
                                 <div style={{ flex: 1, minWidth: '200px' }}>
@@ -227,9 +227,9 @@ const StudentDashboard = () => {
                                 <div style={{ display: 'flex', flexGrow: 1, maxWidth: '400px', marginLeft: 'auto', overflow: 'hidden', alignItems: 'center' }}>
                                     <LogoLoop
                                         logos={[
-                                            ...(userProfile.github ? [{ node: <FaGithub size={24} color="#1E293B" />, title: 'GitHub', href: userProfile.github }] : []),
+                                            ...(userProfile.github ? [{ node: <FaGithub size={24} color="#2D5A3D" />, title: 'GitHub', href: userProfile.github }] : []),
                                             ...(userProfile.linkedin ? [{ node: <FaLinkedin size={24} color="#0A66C2" />, title: 'LinkedIn', href: userProfile.linkedin }] : []),
-                                            ...(userProfile.twitter ? [{ node: <FaXTwitter size={24} color="#1E293B" />, title: 'X', href: userProfile.twitter }] : []),
+                                            ...(userProfile.twitter ? [{ node: <FaXTwitter size={24} color="#2D5A3D" />, title: 'X', href: userProfile.twitter }] : []),
                                             ...(userProfile.portfolioWebsite ? [{ node: <FaGlobe size={24} color="#059669" />, title: 'Portfolio', href: userProfile.portfolioWebsite }] : []),
                                             ...(userProfile.resume ? [{ node: <FaFilePdf size={24} color="#DC2626" />, title: 'Resume', href: `http://localhost:5000${userProfile.resume}` }] : []),
                                             ...(userProfile.customLinkUrl ? [{ node: <FaLink size={24} color="#6366F1" />, title: userProfile.customLinkName || 'Link', href: userProfile.customLinkUrl }] : [])
@@ -256,8 +256,8 @@ const StudentDashboard = () => {
                                 {tab.label}
                                 <span style={{
                                     marginLeft: '0.4rem',
-                                    background: activeTab === tab.id ? '#DBEAFE' : '#F1F5F9',
-                                    color: activeTab === tab.id ? '#1E40AF' : '#64748B',
+                                    background: activeTab === tab.id ? '#C7EABB' : '#F1F5F9',
+                                    color: activeTab === tab.id ? '#1E3D2A' : '#829485',
                                     padding: '0.1rem 0.5rem',
                                     borderRadius: '9999px',
                                     fontSize: '0.75rem',
@@ -386,7 +386,7 @@ const StudentDashboard = () => {
                                                 {item.image ? (
                                                     <img src={item.image} alt={item.title} className="portfolio-img" />
                                                 ) : (
-                                                    <div style={{ height: '160px', background: 'linear-gradient(135deg, #EFF6FF, #DBEAFE)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', borderBottom: '1px solid var(--color-border)' }}>
+                                                    <div style={{ height: '160px', background: 'linear-gradient(135deg, #F0F5EC, #C7EABB)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', borderBottom: '1px solid var(--color-border)' }}>
                                                         <FaBriefcase />
                                                     </div>
                                                 )}

@@ -23,7 +23,7 @@ const Gigs = () => {
         <div className="container" style={{ padding: '4rem 0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
-                    <span className="badge" style={{ background: '#E2E8F0', color: '#475569', marginBottom: '0.5rem' }}>
+                    <span className="badge" style={{ background: '#D8EAD0', color: '#4A5E4D', marginBottom: '0.5rem' }}>
                         {user?.organization?.name || 'Organization'} Workspace
                     </span>
                     <h1>Verified Opportunities</h1>
