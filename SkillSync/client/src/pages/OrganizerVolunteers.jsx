@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
-import { FaUsers, FaFileExport, FaCertificate, FaCheck, FaTimes, FaEnvelope, FaClipboardList, FaFilePdf, FaCalendarAlt, FaTrash, FaCog, FaSpinner } from 'react-icons/fa';
+import { FaUsers, FaFileExport, FaCertificate, FaCheck, FaTimes, FaEnvelope, FaClipboardList, FaFilePdf, FaCalendarAlt, FaTrash, FaCog, FaSpinner, FaUserCheck } from 'react-icons/fa';
 
 const OrganizerVolunteers = () => {
     const { user } = useAuth();
@@ -33,6 +33,7 @@ const OrganizerVolunteers = () => {
     const [loadingEvents, setLoadingEvents] = useState(false);
     const [loadingEventDetails, setLoadingEventDetails] = useState(false);
     const [eventGeneratingCerts, setEventGeneratingCerts] = useState(false);
+    const [verifyingAttendance, setVerifyingAttendance] = useState({});
 
     // Fetch organizer's opportunities for the dropdown
     useEffect(() => {
@@ -128,6 +129,21 @@ const OrganizerVolunteers = () => {
             setEventDetails(data);
         } catch (error) {
             alert(error.response?.data?.message || 'Failed to remove volunteer');
+        }
+    };
+
+    // Verify Attendance (mark as attended)
+    const handleVerifyAttendance = async (volunteerHash) => {
+        setVerifyingAttendance(prev => ({ ...prev, [volunteerHash]: true }));
+        try {
+            await api.post(`/events/${selectedEventId}/verify`, { qrHash: volunteerHash });
+            // Refresh event details
+            const { data } = await api.get(`/events/${selectedEventId}`);
+            setEventDetails(data);
+        } catch (error) {
+            alert(error.response?.data?.message || 'Failed to verify attendance');
+        } finally {
+            setVerifyingAttendance(prev => ({ ...prev, [volunteerHash]: false }));
         }
     };
 
@@ -747,6 +763,20 @@ const OrganizerVolunteers = () => {
                                                                 </td>
                                                                 <td style={{ textAlign: 'right' }}>
                                                                     <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+                                                                        {vol.status === 'registered' && vol.attendanceHash && (
+                                                                            <button
+                                                                                className="btn btn-success btn-sm"
+                                                                                onClick={() => handleVerifyAttendance(vol.attendanceHash)}
+                                                                                disabled={verifyingAttendance[vol.attendanceHash]}
+                                                                                style={{ display: 'flex', alignItems: 'center', gap: '4px', opacity: verifyingAttendance[vol.attendanceHash] ? 0.6 : 1 }}
+                                                                            >
+                                                                                {verifyingAttendance[vol.attendanceHash] ? (
+                                                                                    <><FaSpinner className="spin" /> Verifying...</>
+                                                                                ) : (
+                                                                                    <><FaUserCheck /> Mark Attended</>
+                                                                                )}
+                                                                            </button>
+                                                                        )}
                                                                         <Link 
                                                                             to={`/network/student/${vol.user?._id}`} 
                                                                             className="btn btn-outline btn-sm"
