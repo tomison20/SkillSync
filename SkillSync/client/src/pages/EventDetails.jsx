@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
-import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaEnvelope, FaDownload } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaEnvelope, FaDownload, FaCamera, FaTimes } from 'react-icons/fa';
 
 const EventDetails = () => {
     const { id } = useParams();
@@ -12,6 +12,14 @@ const EventDetails = () => {
     const [teacherName, setTeacherName] = useState('');
     const [teacherEmail, setTeacherEmail] = useState('');
     const [loading, setLoading] = useState(true);
+
+    // Photo gallery state
+    const [photos, setPhotos] = useState([]);
+    const [showUploadForm, setShowUploadForm] = useState(false);
+    const [photoFile, setPhotoFile] = useState(null);
+    const [photoCaption, setPhotoCaption] = useState('');
+    const [uploading, setUploading] = useState(false);
+    const [viewingPhoto, setViewingPhoto] = useState(null);
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -25,6 +33,12 @@ const EventDetails = () => {
                 if (eventRes.data.roles && eventRes.data.roles.length > 0) {
                     setSelectedRole(eventRes.data.roles[0].name);
                 }
+
+                // Fetch photos
+                try {
+                    const photosRes = await api.get(`/events/${id}/photos`);
+                    setPhotos(photosRes.data);
+                } catch (e) { /* no photos yet */ }
             } catch (error) {
                 console.error(error);
             } finally {
@@ -72,6 +86,41 @@ const EventDetails = () => {
         }
     };
 
+    const handlePhotoUpload = async (e) => {
+        e.preventDefault();
+        if (!photoFile) return alert('Select a photo first');
+        setUploading(true);
+        try {
+            // Upload image first
+            const formData = new FormData();
+            formData.append('file', photoFile);
+            const uploadRes = await api.post('/upload/event-photo', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+
+            // Try geolocation
+            let geoData = {};
+            try {
+                const pos = await new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 }));
+                geoData = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
+            } catch (_) { /* geolocation unavailable or denied */ }
+
+            // Post photo metadata
+            const { data } = await api.post(`/events/${id}/photos`, {
+                imageUrl: uploadRes.data.url,
+                caption: photoCaption,
+                geolocation: geoData.latitude ? geoData : undefined
+            });
+
+            setPhotos(prev => [...prev, ...(Array.isArray(data) ? data.slice(-1) : [data])]);
+            setPhotoFile(null);
+            setPhotoCaption('');
+            setShowUploadForm(false);
+        } catch (error) {
+            alert(error.response?.data?.message || 'Failed to upload photo');
+        } finally {
+            setUploading(false);
+        }
+    };
+
     if (loading || !event || !user) return <div className="container" style={{ padding: '4rem' }}>Loading details...</div>;
 
     const isOrganizer = user._id === (event.organizer?._id || event.organizer) || event.coOrganizers?.some(co => (co._id || co) === user._id);
@@ -99,12 +148,12 @@ const EventDetails = () => {
             <div className="grid-layout" style={{ gridTemplateColumns: '2fr 1fr' }}>
                 <div className="card">
                     <h3>Description</h3>
-                    <p style={{ whiteSpace: 'pre-wrap', marginBottom: '2rem', color: '#3D6B4A' }}>{event.description}</p>
+                    <p style={{ whiteSpace: 'pre-wrap', marginBottom: '2rem', color: 'var(--color-accent-hover)' }}>{event.description}</p>
 
                     <h3>Available Roles</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
                         {event.roles?.map((role, idx) => (
-                            <div key={idx} style={{ padding: '1.5rem', background: '#F0F5EC', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div key={idx} style={{ padding: '1.5rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div>
                                     <h4 style={{ margin: '0 0 0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         {role.name}
@@ -133,7 +182,7 @@ const EventDetails = () => {
                         <>
                             <h3>Organizer</h3>
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
-                                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold' }}>
+                                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-accent), var(--color-accent-hover))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold' }}>
                                     {event.organizer.name?.charAt(0) || '?'}
                                 </div>
                                 <div>
@@ -150,7 +199,7 @@ const EventDetails = () => {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
                                 {event.coOrganizers.map(coOrg => (
                                     <div key={coOrg._id} style={{ display: 'flex', alignItems: 'center' }}>
-                                        <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'linear-gradient(135deg, #4A7C59, #3D6B4A)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold', fontSize: '0.8rem' }}>
+                                        <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-accent), var(--color-accent-hover))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold', fontSize: '0.8rem' }}>
                                             {coOrg.name?.charAt(0) || '?'}
                                         </div>
                                         <div>
@@ -205,8 +254,8 @@ const EventDetails = () => {
 
                     {/* Student View: Already Registered */}
                     {!isOrganizer && isRegistered && (
-                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 'var(--radius-md)' }}>
-                            <h4 style={{ color: '#166534', margin: '0 0 1rem' }}>You're Registered!</h4>
+                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'var(--success-bg)', border: '1px solid var(--success-border)', borderRadius: 'var(--radius-md)' }}>
+                            <h4 style={{ color: 'var(--success-text)', margin: '0 0 1rem' }}>You're Registered!</h4>
                             <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}><strong>Role:</strong> {userRegistration?.role || 'Volunteer'}</p>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 <p style={{ fontSize: '0.9rem', margin: 0 }}><strong>Status:</strong> {userRegistration?.status === 'attended' ? 'Attended ✓' : 'Registered / Pending Attendance'}</p>
@@ -214,7 +263,7 @@ const EventDetails = () => {
                                     <a 
                                         href={`mailto:${event.organizer.email}?subject=Question regarding Event: ${event.title}`} 
                                         className="btn btn-outline btn-sm" 
-                                        style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px', color: '#166534', borderColor: '#BBF7D0', backgroundColor: 'white' }}
+                                        style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--success-text)', borderColor: 'var(--success-border)', backgroundColor: 'var(--color-bg-card)' }}
                                     >
                                         <FaEnvelope /> Contact Organizer
                                     </a>
@@ -229,7 +278,7 @@ const EventDetails = () => {
                                         target="_blank" 
                                         rel="noreferrer" 
                                         className="btn btn-primary btn-sm" 
-                                        style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: '#10B981', borderColor: '#10B981' }}
+                                        style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--color-accent)', borderColor: 'var(--color-accent)' }}
                                     >
                                         <FaDownload /> Download Certificate
                                     </a>
@@ -237,9 +286,9 @@ const EventDetails = () => {
                             )}
 
                             {userRegistration?.attendanceHash && (
-                                <div style={{ background: 'white', padding: '1rem', borderRadius: '8px', border: '1px dashed #10B981', textAlign: 'center' }}>
+                                <div style={{ background: 'var(--color-bg-card)', padding: '1rem', borderRadius: '8px', border: '1px dashed var(--color-accent)', textAlign: 'center' }}>
                                     <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>Your Attendance Hash</p>
-                                    <code style={{ background: '#F0F5EC', padding: '0.5rem', borderRadius: '4px', wordBreak: 'break-all', fontSize: '0.8rem', display: 'block' }}>
+                                    <code style={{ background: 'var(--color-bg-elevated)', padding: '0.5rem', borderRadius: '4px', wordBreak: 'break-all', fontSize: '0.8rem', display: 'block' }}>
                                         {userRegistration.attendanceHash}
                                     </code>
                                 </div>
@@ -252,7 +301,7 @@ const EventDetails = () => {
                         <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid var(--color-border)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                 <h4>Event Management</h4>
-                                <button onClick={handleDeleteEvent} className="btn btn-outline" style={{ color: '#EF4444', borderColor: '#EF4444', padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}>
+                                <button onClick={handleDeleteEvent} className="btn btn-outline" style={{ color: 'var(--color-error)', borderColor: 'var(--color-error)', padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}>
                                     Delete Event
                                 </button>
                             </div>
@@ -264,7 +313,7 @@ const EventDetails = () => {
                             {event.volunteers && event.volunteers.length > 0 ? (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
                                     {event.volunteers.map((vol, index) => (
-                                        <div key={index} style={{ padding: '1rem', border: '1px solid var(--color-border)', borderRadius: '6px', background: 'white' }}>
+                                        <div key={index} style={{ padding: '1rem', border: '1px solid var(--color-border)', borderRadius: '6px', background: 'var(--color-bg-card)' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                                                 <div>
                                                     <Link to={`/network/student/${vol.user?._id}`} style={{ fontWeight: 600, margin: 0, color: 'var(--color-primary)', textDecoration: 'none' }}>{vol.user?.name || 'Student'}</Link>
@@ -276,7 +325,7 @@ const EventDetails = () => {
                                                 <span className={`badge ${vol.status === 'attended' ? 'badge-success' : 'badge-status'}`} style={{ fontSize: '0.65rem' }}>
                                                     {vol.status.toUpperCase()}
                                                 </span>
-                                                <button onClick={() => handleRemoveVolunteer(vol._id)} style={{ background: 'none', border: 'none', color: '#EF4444', fontSize: '0.75rem', cursor: 'pointer', padding: 0 }}>
+                                                <button onClick={() => handleRemoveVolunteer(vol._id)} style={{ background: 'none', border: 'none', color: 'var(--color-error)', fontSize: '0.75rem', cursor: 'pointer', padding: 0 }}>
                                                     Remove Student
                                                 </button>
                                             </div>
@@ -284,7 +333,7 @@ const EventDetails = () => {
                                     ))}
                                 </div>
                             ) : (
-                                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textAlign: 'center', padding: '1rem', background: '#F0F5EC', borderRadius: '4px' }}>
+                                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textAlign: 'center', padding: '1rem', background: 'var(--color-bg-elevated)', borderRadius: '4px' }}>
                                     No volunteers have registered yet.
                                 </p>
                             )}
@@ -296,6 +345,68 @@ const EventDetails = () => {
                     )}
                 </div>
             </div>
+
+            {/* ─── Event Photo Gallery ─── */}
+            <div className="card" style={{ marginTop: '2rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                    <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><FaCamera /> Event Photos</h3>
+                    {(isOrganizer || isRegistered) && (
+                        <button className="btn btn-accent btn-sm" onClick={() => setShowUploadForm(!showUploadForm)}>
+                            {showUploadForm ? 'Cancel' : '+ Upload Photo'}
+                        </button>
+                    )}
+                </div>
+
+                {showUploadForm && (
+                    <form onSubmit={handlePhotoUpload} style={{ padding: '1rem', background: 'var(--color-bg-elevated)', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', border: '1px solid var(--color-border)' }}>
+                        <div className="input-group">
+                            <label className="label">Photo *</label>
+                            <input type="file" accept="image/*" className="input" style={{ padding: '0.5rem' }} onChange={e => setPhotoFile(e.target.files[0])} required />
+                        </div>
+                        <div className="input-group">
+                            <label className="label">Caption (optional)</label>
+                            <input className="input" value={photoCaption} onChange={e => setPhotoCaption(e.target.value)} placeholder="Add a caption..." />
+                        </div>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0 0 0.75rem' }}>Location will be auto-tagged if browser permission is granted.</p>
+                        <button type="submit" className="btn btn-primary" disabled={uploading || !photoFile}>
+                            {uploading ? 'Uploading...' : 'Upload Photo'}
+                        </button>
+                    </form>
+                )}
+
+                {photos.length > 0 ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.75rem' }}>
+                        {photos.map((photo, idx) => (
+                            <div key={idx} onClick={() => setViewingPhoto(photo)} style={{ cursor: 'pointer', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--color-border)', position: 'relative', aspectRatio: '1' }}>
+                                <img src={`http://localhost:5000${photo.imageUrl}`} alt={photo.caption || 'Event photo'} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                                {photo.caption && (
+                                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0.5rem', background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', color: 'white', fontSize: '0.75rem' }}>
+                                        {photo.caption}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem 0' }}>No photos uploaded yet.</p>
+                )}
+            </div>
+
+            {/* Photo Lightbox Modal */}
+            {viewingPhoto && (
+                <div onClick={() => setViewingPhoto(null)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, cursor: 'pointer' }}>
+                    <button onClick={() => setViewingPhoto(null)} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}><FaTimes /></button>
+                    <div onClick={e => e.stopPropagation()} style={{ maxWidth: '90vw', maxHeight: '85vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <img src={`http://localhost:5000${viewingPhoto.imageUrl}`} alt={viewingPhoto.caption || ''} style={{ maxWidth: '100%', maxHeight: '75vh', borderRadius: '8px', objectFit: 'contain' }} />
+                        {viewingPhoto.caption && <p style={{ color: 'white', marginTop: '1rem', fontSize: '0.95rem', textAlign: 'center' }}>{viewingPhoto.caption}</p>}
+                        {viewingPhoto.geolocation?.latitude && (
+                            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+                                Location: {viewingPhoto.geolocation.latitude.toFixed(4)}, {viewingPhoto.geolocation.longitude.toFixed(4)}
+                            </p>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

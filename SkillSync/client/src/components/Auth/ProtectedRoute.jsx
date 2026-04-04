@@ -11,7 +11,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '100vh',
-                color: '#64748B',
+                color: 'var(--color-text-muted)',
                 fontSize: '1.2rem'
             }}>
                 Loading Institutional Portal...

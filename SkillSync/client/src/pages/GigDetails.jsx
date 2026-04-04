@@ -100,21 +100,21 @@ const GigDetails = () => {
             <div className="grid-layout" style={{ gridTemplateColumns: '2fr 1fr' }}>
                 <div className="card">
                     <h3>Description</h3>
-                    <p style={{ whiteSpace: 'pre-wrap', marginBottom: '2rem', color: '#3D6B4A' }}>{gig.description}</p>
+                    <p style={{ whiteSpace: 'pre-wrap', marginBottom: '2rem', color: 'var(--color-accent-hover)' }}>{gig.description}</p>
 
                     <h3>Expected Deliverables</h3>
-                    <p style={{ color: '#3D6B4A', marginBottom: '2rem' }}>{gig.deliverables}</p>
+                    <p style={{ color: 'var(--color-accent-hover)', marginBottom: '2rem' }}>{gig.deliverables}</p>
 
                     {/* Workflow: Submission (Student) */}
                     {isAssigned && gig.status === 'assigned' && (
-                        <div style={{ marginTop: '2rem', padding: '2rem', background: '#F0F5EC', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}>
+                        <div style={{ marginTop: '2rem', padding: '2rem', background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', margin: 0 }}>Provide a link to your completed project or documentation.</p>
                                 {gig.organizer?.email && (
                                     <a 
                                         href={`mailto:${gig.organizer.email}?subject=Question regarding Opportunity: ${gig.title}`} 
                                         className="btn btn-outline btn-sm" 
-                                        style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'white' }}
+                                        style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--color-bg-card)' }}
                                     >
                                         <FaEnvelope /> Contact Organizer
                                     </a>
@@ -132,9 +132,9 @@ const GigDetails = () => {
 
                     {/* Workflow: Verification (Organizer) */}
                     {isOrganizer && gig.status === 'submitted' && (
-                        <div style={{ marginTop: '2rem', padding: '2rem', background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 'var(--radius-md)' }}>
-                            <h4 style={{ color: '#166534' }}>Review & Verify Work</h4>
-                            <div style={{ margin: '1rem 0', padding: '1rem', background: 'white', borderRadius: '4px' }}>
+                        <div style={{ marginTop: '2rem', padding: '2rem', background: 'var(--success-bg)', border: '1px solid var(--success-border)', borderRadius: 'var(--radius-md)' }}>
+                            <h4 style={{ color: 'var(--success-text)' }}>Review & Verify Work</h4>
+                            <div style={{ margin: '1rem 0', padding: '1rem', background: 'var(--color-bg-card)', borderRadius: '4px' }}>
                                 <p><strong>Submission Link:</strong> <a href={gig.submission?.link} target="_blank" rel="noreferrer" style={{ color: 'var(--color-accent)' }}>{gig.submission?.link}</a></p>
                             </div>
                             <p style={{ fontSize: '0.9rem' }}>Verifying will mark this opportunity as completed and record it in the student's portfolio.</p>

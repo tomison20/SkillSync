@@ -31,9 +31,12 @@ const CreateEvent = () => {
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const handleCoOrganizerChange = (e) => {
-        const value = Array.from(e.target.selectedOptions, option => option.value);
-        setSelectedCoOrganizers(value);
+    const handleCoOrganizerToggle = (memberId) => {
+        setSelectedCoOrganizers(prev => 
+            prev.includes(memberId) 
+                ? prev.filter(id => id !== memberId)
+                : [...prev, memberId]
+        );
     };
 
     const handleSubmit = async (e) => {
@@ -87,20 +90,36 @@ const CreateEvent = () => {
                     </div>
 
                     <div className="input-group">
-                        <label className="label">Co-Organizers (Optional, Hold Ctrl/Cmd to select multiple)</label>
-                        <select 
-                            className="input" 
-                            multiple 
-                            style={{ height: 'auto', minHeight: '100px' }}
-                            value={selectedCoOrganizers}
-                            onChange={handleCoOrganizerChange}
-                        >
-                            {members.map(member => (
-                                <option key={member._id} value={member._id} style={{ padding: '0.5rem' }}>
-                                    {member.name} ({member.email})
-                                </option>
-                            ))}
-                        </select>
+                        <label className="label">Co-Organizers (Optional)</label>
+                        <div className="input" style={{ height: 'auto', maxHeight: '200px', overflowY: 'auto', padding: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', backgroundColor: 'var(--color-bg)' }}>
+                            {members.length === 0 ? (
+                                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted, #829485)', margin: 0, padding: '0.5rem' }}>No other organizers found in your institution.</p>
+                            ) : (
+                                members.map(member => (
+                                    <label key={member._id} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem', borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'background 0.2s', backgroundColor: selectedCoOrganizers.includes(member._id) ? 'var(--color-bg-elevated)' : 'transparent' }}>
+                                        <input 
+                                            type="checkbox" 
+                                            checked={selectedCoOrganizers.includes(member._id)}
+                                            onChange={() => handleCoOrganizerToggle(member._id)}
+                                            style={{ width: '16px', height: '16px', accentColor: 'var(--color-accent)' }}
+                                        />
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            {member.avatar ? (
+                                                <img src={member.avatar.startsWith('http') ? member.avatar : `http://localhost:5000${member.avatar}`} alt={member.name} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
+                                            ) : (
+                                                <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'var(--color-accent)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}>
+                                                    {member.name?.charAt(0)}
+                                                </div>
+                                            )}
+                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                <span style={{ fontSize: '0.95rem', fontWeight: selectedCoOrganizers.includes(member._id) ? '600' : '400', color: 'var(--color-text-main)' }}>{member.name}</span>
+                                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted, #829485)' }}>{member.email}</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                ))
+                            )}
+                        </div>
                     </div>
 
                     <h3 style={{ marginTop: '1.5rem', marginBottom: '1rem', fontSize: '1.2rem' }}>Primary Volunteer Role</h3>

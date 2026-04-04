@@ -131,7 +131,7 @@ const OrganizerDashboard = () => {
                             </p>
                         </div>
                         <div style={{ display: 'flex', gap: '0.75rem' }}>
-                            <Link to="/gigs/create" className="btn" style={{ background: 'linear-gradient(135deg, #2D5A3D, #1E3D2A)', color: 'white', boxShadow: '0 2px 8px rgba(124,58,237,0.3)' }}>
+                            <Link to="/gigs/create" className="btn" style={{ background: 'linear-gradient(135deg, var(--accent-700), var(--accent-800))', color: 'white', boxShadow: '0 2px 8px rgba(124,58,237,0.3)' }}>
                                 + New Opportunity
                             </Link>
                             <Link to="/volunteering/create" className="btn" style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
@@ -152,7 +152,7 @@ const OrganizerDashboard = () => {
                     {userProfile && (
                         <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #2D5A3D' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-                                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, #2D5A3D, #1E3D2A)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
+                                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent-700), var(--accent-800))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
                                     {userProfile.avatar ? <img src={`http://localhost:5000${userProfile.avatar}`} alt={userProfile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : userProfile.name?.charAt(0)}
                                 </div>
                                 <div style={{ flex: 1, minWidth: '200px' }}>
@@ -171,7 +171,7 @@ const OrganizerDashboard = () => {
                     {/* Stats Row */}
                     <div className="grid-3" style={{ marginBottom: '1.5rem' }}>
                         <div className="card stat-card animate-slide-up stagger-1">
-                            <div className="stat-value" style={{ color: '#2D5A3D' }}>{myOpportunities.length}</div>
+                            <div className="stat-value" style={{ color: 'var(--accent-700)' }}>{myOpportunities.length}</div>
                             <div className="stat-label">Total Opportunities</div>
                         </div>
                         <div className="card stat-card animate-slide-up stagger-2">
@@ -195,8 +195,8 @@ const OrganizerDashboard = () => {
                                 {tab.label}
                                 <span style={{
                                     marginLeft: '0.4rem',
-                                    background: activeTab === tab.id ? '#E0EDDA' : '#F1F5F9',
-                                    color: activeTab === tab.id ? '#2D5A3D' : '#829485',
+                                    background: activeTab === tab.id ? 'var(--accent-100)' : 'var(--color-bg-elevated)',
+                                    color: activeTab === tab.id ? 'var(--accent-700)' : 'var(--color-text-muted)',
                                     padding: '0.1rem 0.5rem',
                                     borderRadius: '9999px',
                                     fontSize: '0.75rem',
@@ -266,7 +266,7 @@ const OrganizerDashboard = () => {
                                                 {/* Expanded Applications Panel */}
                                                 {expandedGig === gig._id && (
                                                     <tr key={`${gig._id}-apps`}>
-                                                        <td colSpan="5" style={{ background: '#F0F5EC', padding: '1.25rem' }}>
+                                                        <td colSpan="5" style={{ background: 'var(--color-bg-elevated)', padding: '1.25rem' }}>
                                                             <h4 style={{ margin: '0 0 1rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                 <FaEnvelope /> Student Applications for "{gig.title}"
                                                             </h4>
@@ -288,7 +288,7 @@ const OrganizerDashboard = () => {
                                                                                             {app.freelancer?.email}
                                                                                         </p>
                                                                                         {app.freelancer?.resume && (
-                                                                                            <a href={`http://localhost:5000${app.freelancer.resume}`} target="_blank" rel="noreferrer" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px', color: '#DC2626', textDecoration: 'none', fontWeight: 600, marginTop: '0.2rem' }}>
+                                                                                            <a href={`http://localhost:5000${app.freelancer.resume}`} target="_blank" rel="noreferrer" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-error)', textDecoration: 'none', fontWeight: 600, marginTop: '0.2rem' }}>
                                                                                                 <FaFilePdf /> View Resume
                                                                                             </a>
                                                                                         )}
@@ -309,13 +309,13 @@ const OrganizerDashboard = () => {
                                                                                         </Link>
                                                                                     )}
                                                                                 </div>
-                                                                                <p style={{ fontSize: '0.85rem', margin: '0.5rem 0 0', padding: '0.75rem', background: 'white', borderRadius: '4px', border: '1px solid var(--color-border)' }}>
+                                                                                <p style={{ fontSize: '0.85rem', margin: '0.5rem 0 0', padding: '0.75rem', background: 'var(--color-bg-card)', borderRadius: '4px', border: '1px solid var(--color-border)' }}>
                                                                                     {app.proposal}
                                                                                 </p>
                                                                                 {app.freelancer?.skills?.length > 0 && (
                                                                                     <div style={{ display: 'flex', gap: '0.3rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
                                                                                         {app.freelancer.skills.map((s, i) => (
-                                                                                            <span key={i} style={{ background: '#F0F5EC', color: '#1E3D2A', padding: '0.15rem 0.5rem', borderRadius: '9999px', fontSize: '0.7rem', fontWeight: 600 }}>{s}</span>
+                                                                                            <span key={i} style={{ background: 'var(--color-bg-elevated)', color: 'var(--accent-800)', padding: '0.15rem 0.5rem', borderRadius: '9999px', fontSize: '0.7rem', fontWeight: 600 }}>{s}</span>
                                                                                         ))}
                                                                                     </div>
                                                                                 )}
@@ -368,7 +368,7 @@ const OrganizerDashboard = () => {
                                                     <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><FaCalendarAlt /> {new Date(event.date).toLocaleDateString()}</span>
                                                     <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><FaMapMarkerAlt /> {event.location}</span>
                                                 </div>
-                                                <div style={{ marginTop: '1rem', padding: '0.75rem', background: '#F0F5EC', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}>
+                                                <div style={{ marginTop: '1rem', padding: '0.75rem', background: 'var(--color-bg-elevated)', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}>
                                                     <strong>Volunteers:</strong> {event.volunteers?.length || 0}
                                                     {event.roles?.length > 0 && (
                                                         <span style={{ marginLeft: '1rem' }}>
@@ -473,7 +473,7 @@ const OrganizerDashboard = () => {
                                 to="/dashboard/organizer/applications"
                                 className="btn"
                                 style={{
-                                    background: 'linear-gradient(135deg, #2D5A3D, #1E3D2A)',
+                                    background: 'linear-gradient(135deg, var(--accent-700), var(--accent-800))',
                                     color: 'white',
                                     boxShadow: '0 2px 8px rgba(124,58,237,0.3)',
                                     textDecoration: 'none'

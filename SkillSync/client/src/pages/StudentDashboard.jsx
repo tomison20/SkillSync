@@ -131,6 +131,25 @@ const StudentDashboard = () => {
         }
     };
 
+    const handleCertificateUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('portfolioPDF', file); // Reusing the PDF upload endpoint which accepts PDF/Images
+
+        try {
+            const { data } = await api.post('/upload/pdf', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            setAchievementForm({ ...achievementForm, certificateLink: `http://localhost:5000${data.url}` });
+            alert('Certificate file uploaded successfully!');
+        } catch (error) {
+            console.error(error);
+            alert('Certificate upload failed. Please try again.');
+        }
+    };
+
     const handleDeleteAchievement = async (id) => {
         if (!window.confirm('Delete this achievement?')) return;
         try {
@@ -174,7 +193,7 @@ const StudentDashboard = () => {
                         </div>
                         <div style={{ display: 'flex', gap: '0.75rem' }}>
                             {userProfile?.resume && (
-                                <a href={`http://localhost:5000${userProfile.resume}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#DC2626', color: 'white', border: 'none', textDecoration: 'none' }}>
+                                <a href={`http://localhost:5000${userProfile.resume}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--color-error)', color: 'white', border: 'none', textDecoration: 'none' }}>
                                     <FaFilePdf /> Resume
                                 </a>
                             )}
@@ -203,7 +222,7 @@ const StudentDashboard = () => {
                             <div className="stat-label">Activities Completed</div>
                         </div>
                         <div className="card stat-card animate-slide-up stagger-3">
-                            <div className="stat-value" style={{ color: '#2D5A3D' }}>{stats.contributionScore}</div>
+                            <div className="stat-value" style={{ color: 'var(--accent-700)' }}>{stats.contributionScore}</div>
                             <div className="stat-label">SkillSync Score</div>
                         </div>
                     </div>
@@ -212,7 +231,7 @@ const StudentDashboard = () => {
                     {userProfile && (
                         <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #4A7C59' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-                                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, #4A7C59, #2D5A3D)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
+                                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-accent), var(--accent-700))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
                                     {userProfile.avatar ? <img src={`http://localhost:5000${userProfile.avatar}`} alt={userProfile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : userProfile.name?.charAt(0)}
                                 </div>
                                 <div style={{ flex: 1, minWidth: '200px' }}>
@@ -251,13 +270,13 @@ const StudentDashboard = () => {
                                 key={tab.id}
                                 className={`tab ${activeTab === tab.id ? 'active' : ''}`}
                                 onClick={() => setActiveTab(tab.id)}
-                                style={{ fontFamily: 'var(--font-serif)', fontSize: '1.05rem', fontWeight: 600 }}
+                                style={{ fontSize: '1.05rem', fontWeight: 600 }}
                             >
                                 {tab.label}
                                 <span style={{
                                     marginLeft: '0.4rem',
-                                    background: activeTab === tab.id ? '#C7EABB' : '#F1F5F9',
-                                    color: activeTab === tab.id ? '#1E3D2A' : '#829485',
+                                    background: activeTab === tab.id ? 'var(--color-accent-light)' : 'var(--color-bg-elevated)',
+                                    color: activeTab === tab.id ? 'var(--accent-800)' : 'var(--color-text-muted)',
                                     padding: '0.1rem 0.5rem',
                                     borderRadius: '9999px',
                                     fontSize: '0.75rem',
@@ -347,7 +366,7 @@ const StudentDashboard = () => {
                                                                 <a 
                                                                     href={`mailto:${app.gig.organizer.email || ''}?subject=Question regarding: ${app.gig.title}`} 
                                                                     className="btn btn-outline btn-sm" 
-                                                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', color: '#4B5563', borderColor: '#D1D5DB' }}
+                                                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-text-secondary)', borderColor: 'var(--color-border)' }}
                                                                 >
                                                                     <FaEnvelope /> Contact Organizer
                                                                 </a>
@@ -359,7 +378,7 @@ const StudentDashboard = () => {
                                                                     target="_blank" 
                                                                     rel="noreferrer" 
                                                                     className="btn btn-primary btn-sm" 
-                                                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: '#10B981', borderColor: '#10B981' }}
+                                                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: 'var(--color-accent)', borderColor: 'var(--color-accent)' }}
                                                                 >
                                                                     <FaDownload /> Download Certificate
                                                                 </a>
@@ -414,7 +433,7 @@ const StudentDashboard = () => {
                                                             </a>
                                                         )}
                                                         {item.portfolioPDF && (
-                                                            <a href={`${api.defaults.baseURL?.replace('/api', '')}${item.portfolioPDF}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none', flex: 1, color: '#DC2626', borderColor: '#FECACA' }}>
+                                                            <a href={`${api.defaults.baseURL?.replace('/api', '')}${item.portfolioPDF}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none', flex: 1, color: 'var(--color-error)', borderColor: 'var(--error-border)' }}>
                                                                 <FaFilePdf /> PDF
                                                             </a>
                                                         )}
@@ -542,8 +561,14 @@ const StudentDashboard = () => {
                                 <input type="date" className="input" value={achievementForm.date} onChange={e => setAchievementForm({ ...achievementForm, date: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label className="label">Certificate Link</label>
-                                <input className="input" value={achievementForm.certificateLink} onChange={e => setAchievementForm({ ...achievementForm, certificateLink: e.target.value })} placeholder="https://..." />
+                                <label className="label">Certificate Link or File</label>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                    <input className="input" value={achievementForm.certificateLink} onChange={e => setAchievementForm({ ...achievementForm, certificateLink: e.target.value })} placeholder="https://..." />
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--color-bg-elevated)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
+                                        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Or upload a file:</span>
+                                        <input type="file" accept=".pdf,image/*" onChange={handleCertificateUpload} style={{ fontSize: '0.85rem' }} />
+                                    </div>
+                                </div>
                             </div>
                             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
                                 <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>

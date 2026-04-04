@@ -35,6 +35,18 @@ const eventSchema = new mongoose.Schema({
 
     status: { type: String, enum: ['upcoming', 'completed', 'cancelled'], default: 'upcoming' },
 
+    // Event Photos (uploaded by volunteers & organizers)
+    photos: [{
+        uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        imageUrl: { type: String, required: true },
+        caption: { type: String, default: '' },
+        geolocation: {
+            lat: { type: Number },
+            lng: { type: Number }
+        },
+        uploadedAt: { type: Date, default: Date.now }
+    }],
+
     createdAt: { type: Date, default: Date.now }
 });
 

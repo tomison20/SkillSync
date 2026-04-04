@@ -185,16 +185,16 @@ const Profile = () => {
 
     // -- Modal styles (light theme) --
     const overlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(4px)' };
-    const modalStyle = { background: '#ffffff', borderRadius: '12px', width: '100%', maxWidth: '560px', maxHeight: '85vh', overflow: 'auto', border: '1px solid var(--color-border)', boxShadow: '0 25px 50px rgba(0,0,0,0.25)' };
+    const modalStyle = { background: 'var(--color-bg-card)', borderRadius: '12px', width: '100%', maxWidth: '560px', maxHeight: '85vh', overflow: 'auto', border: '1px solid var(--color-border)', boxShadow: '0 25px 50px rgba(0,0,0,0.25)' };
     const headerStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)' };
     const bodyStyle = { padding: '1.5rem' };
-    const labelStyle = { display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#2D5A3D', marginBottom: '0.4rem' };
-    const inputStyle = { width: '100%', padding: '0.6rem 0.75rem', background: '#F0F5EC', border: '1px solid #B8D4AE', borderRadius: '6px', color: '#1A2E1D', fontSize: '0.9rem', outline: 'none', boxSizing: 'border-box' };
+    const labelStyle = { display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--accent-700)', marginBottom: '0.4rem' };
+    const inputStyle = { width: '100%', padding: '0.6rem 0.75rem', background: 'var(--color-bg-elevated)', border: '1px solid #B8D4AE', borderRadius: '6px', color: 'var(--color-primary)', fontSize: '0.9rem', outline: 'none', boxSizing: 'border-box' };
     const textareaStyle = { ...inputStyle, resize: 'vertical', minHeight: '80px' };
     const selectStyle = { ...inputStyle, cursor: 'pointer', appearance: 'auto' };
     const fieldGap = { marginBottom: '1.25rem' };
-    const requiredStar = { color: '#EF4444', marginLeft: '2px' };
-    const tagStyle = { display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '0.25rem 0.6rem', background: '#F0F5EC', color: '#2D5A3D', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 500 };
+    const requiredStar = { color: 'var(--color-error)', marginLeft: '2px' };
+    const tagStyle = { display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '0.25rem 0.6rem', background: 'var(--color-bg-elevated)', color: 'var(--accent-700)', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 500 };
 
     return (
         <div className="container" style={{ padding: '4rem 0', maxWidth: '900px' }}>
@@ -206,7 +206,7 @@ const Profile = () => {
                             width: 100, height: 100, borderRadius: 'var(--radius-sm)',
                             background: 'var(--color-primary)', display: 'flex',
                             alignItems: 'center', justifyContent: 'center',
-                            fontSize: '2.5rem', color: '#fff', fontWeight: 'bold',
+                            fontSize: '2.5rem', color: 'var(--color-bg-card)', fontWeight: 'bold',
                             overflow: 'hidden'
                         }}>
                             {user.avatar ? <img src={`http://localhost:5000${user.avatar}`} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : user.name.charAt(0)}
@@ -228,7 +228,7 @@ const Profile = () => {
                 <div style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
                     <div>
                         <h3>Academic Bio</h3>
-                        <p style={{ lineHeight: 1.6, color: '#3D6B4A' }}>
+                        <p style={{ lineHeight: 1.6, color: 'var(--color-accent-hover)' }}>
                             {user.bio || 'No academic bio provided.'}
                         </p>
                     </div>
@@ -236,8 +236,8 @@ const Profile = () => {
                         <h3>Key Skills</h3>
                         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                             {user.skills && user.skills.length > 0 ? user.skills.map((skill, i) => (
-                                <span key={i} className="badge" style={{ background: '#F0F5EC', color: '#2D5A3D' }}>{skill}</span>
-                            )) : <p style={{ color: '#999' }}>No skills listed.</p>}
+                                <span key={i} className="badge" style={{ background: 'var(--color-bg-elevated)', color: 'var(--accent-700)' }}>{skill}</span>
+                            )) : <p style={{ color: 'var(--color-text-muted)' }}>No skills listed.</p>}
                         </div>
                     </div>
                 </div>
@@ -279,7 +279,7 @@ const Profile = () => {
                                 {item.skills && item.skills.length > 0 && (
                                     <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
                                         {item.skills.slice(0, 4).map((s, i) => (
-                                            <span key={i} className="badge" style={{ fontSize: '0.65rem', padding: '0.15rem 0.4rem', background: '#F0F5EC', color: '#2D5A3D' }}>{s}</span>
+                                            <span key={i} className="badge" style={{ fontSize: '0.65rem', padding: '0.15rem 0.4rem', background: 'var(--color-bg-elevated)', color: 'var(--accent-700)' }}>{s}</span>
                                         ))}
                                         {item.skills.length > 4 && <span className="badge" style={{ fontSize: '0.65rem', padding: '0.15rem 0.4rem' }}>+{item.skills.length - 4}</span>}
                                     </div>
@@ -299,7 +299,7 @@ const Profile = () => {
                                         </a>
                                     )}
                                     {item.portfolioPDF && (
-                                        <a href={`http://localhost:5000${item.portfolioPDF}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none', flex: 1, color: '#DC2626', borderColor: '#FECACA', fontSize: '0.75rem' }}>
+                                        <a href={`http://localhost:5000${item.portfolioPDF}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none', flex: 1, color: 'var(--color-error)', borderColor: 'var(--error-border)', fontSize: '0.75rem' }}>
                                             <FaFilePdf /> PDF
                                         </a>
                                     )}
@@ -310,7 +310,7 @@ const Profile = () => {
                         </div>
                     )) : (
                         <div className="card" style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem' }}>
-                            <p style={{ color: '#999' }}>No portfolio projects showcased yet.</p>
+                            <p style={{ color: 'var(--color-text-muted)' }}>No portfolio projects showcased yet.</p>
                         </div>
                     )}
                 </div>
@@ -333,7 +333,7 @@ const Profile = () => {
                                 <Link to={`/network/student/${f._id}`} className="btn btn-outline" style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}>Profile</Link>
                             </div>
                         )) : (
-                            <p style={{ color: '#999', fontStyle: 'italic' }}>You aren&apos;t following anyone yet.</p>
+                            <p style={{ color: 'var(--color-text-muted)', fontStyle: 'italic' }}>You aren&apos;t following anyone yet.</p>
                         )}
                     </div>
                 </div>
@@ -353,7 +353,7 @@ const Profile = () => {
                                 <Link to={`/network/student/${f._id}`} className="btn btn-outline" style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}>Profile</Link>
                             </div>
                         )) : (
-                            <p style={{ color: '#999', fontStyle: 'italic' }}>You don&apos;t have any followers yet.</p>
+                            <p style={{ color: 'var(--color-text-muted)', fontStyle: 'italic' }}>You don&apos;t have any followers yet.</p>
                         )}
                     </div>
                 </div>
@@ -388,7 +388,7 @@ const Profile = () => {
                             </div>
                         </div>
                     )) : (
-                        <p style={{ textAlign: 'center', color: '#999' }}>No achievements recorded.</p>
+                        <p style={{ textAlign: 'center', color: 'var(--color-text-muted)' }}>No achievements recorded.</p>
                     )}
                 </div>
             </section>
@@ -398,11 +398,11 @@ const Profile = () => {
                 <div style={overlayStyle} onClick={() => setShowProjectModal(false)}>
                     <div style={modalStyle} onClick={e => e.stopPropagation()}>
                         <div style={headerStyle}>
-                            <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#1A2E1D' }}>{editingProject ? 'Edit project' : 'Add project'}</h3>
-                            <button onClick={() => setShowProjectModal(false)} style={{ background: 'none', border: 'none', color: '#829485', cursor: 'pointer', fontSize: '1.2rem' }}><FaTimes /></button>
+                            <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--color-primary)' }}>{editingProject ? 'Edit project' : 'Add project'}</h3>
+                            <button onClick={() => setShowProjectModal(false)} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: '1.2rem' }}><FaTimes /></button>
                         </div>
                         <form onSubmit={handleProjectSubmit} style={bodyStyle}>
-                            <p style={{ fontSize: '0.75rem', color: '#829485', margin: '0 0 1.25rem' }}>* Indicates required</p>
+                            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: '0 0 1.25rem' }}>* Indicates required</p>
 
                             {/* Project Name */}
                             <div style={fieldGap}>
@@ -414,13 +414,13 @@ const Profile = () => {
                             <div style={fieldGap}>
                                 <label style={labelStyle}>Description</label>
                                 <textarea style={textareaStyle} value={projectForm.description} onChange={e => setProjectForm({ ...projectForm, description: e.target.value.slice(0, 2000) })} placeholder="Describe your project, its goals, and your contributions..." rows={4} />
-                                <p style={{ textAlign: 'right', fontSize: '0.7rem', color: '#829485', margin: '0.2rem 0 0' }}>{projectForm.description.length}/2,000</p>
+                                <p style={{ textAlign: 'right', fontSize: '0.7rem', color: 'var(--color-text-muted)', margin: '0.2rem 0 0' }}>{projectForm.description.length}/2,000</p>
                             </div>
 
                             {/* Skills */}
                             <div style={fieldGap}>
                                 <label style={labelStyle}>Skills</label>
-                                <p style={{ fontSize: '0.75rem', color: '#829485', margin: '0 0 0.5rem' }}>We recommend adding your top 5 used in this project.</p>
+                                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: '0 0 0.5rem' }}>We recommend adding your top 5 used in this project.</p>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: projectForm.skills.length > 0 ? '0.5rem' : 0 }}>
                                     {projectForm.skills.map((skill, i) => (
                                         <span key={i} style={tagStyle}>
@@ -438,13 +438,13 @@ const Profile = () => {
                             {/* Media - Project Link & Image */}
                             <div style={fieldGap}>
                                 <label style={labelStyle}>Media</label>
-                                <p style={{ fontSize: '0.75rem', color: '#829485', margin: '0 0 0.5rem' }}>Add links, images, or documents related to your project.</p>
+                                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: '0 0 0.5rem' }}>Add links, images, or documents related to your project.</p>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                                     <input style={inputStyle} value={projectForm.projectLink} onChange={e => setProjectForm({ ...projectForm, projectLink: e.target.value })} placeholder="Project URL (https://github.com/...)" />
                                     <input style={inputStyle} value={projectForm.image} onChange={e => setProjectForm({ ...projectForm, image: e.target.value })} placeholder="Image URL (https://...)" />
                                     <div>
                                         <label style={{ ...labelStyle, display: 'flex', alignItems: 'center', gap: '6px' }}><FaFilePdf /> Upload PDF</label>
-                                        <input type="file" accept=".pdf" onChange={e => setPdfFile(e.target.files[0])} style={{ fontSize: '0.8rem', color: '#3D6B4A' }} />
+                                        <input type="file" accept=".pdf" onChange={e => setPdfFile(e.target.files[0])} style={{ fontSize: '0.8rem', color: 'var(--color-accent-hover)' }} />
                                     </div>
                                 </div>
                             </div>
@@ -454,8 +454,8 @@ const Profile = () => {
                                 <label style={{ ...labelStyle, fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem' }}>Additional details</label>
                                 
                                 {/* Currently working */}
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', marginBottom: '1rem', fontSize: '0.85rem', color: '#2D5A3D' }}>
-                                    <input type="checkbox" checked={projectForm.currentlyWorking} onChange={e => setProjectForm({ ...projectForm, currentlyWorking: e.target.checked })} style={{ width: '16px', height: '16px', accentColor: '#4A7C59' }} />
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', marginBottom: '1rem', fontSize: '0.85rem', color: 'var(--accent-700)' }}>
+                                    <input type="checkbox" checked={projectForm.currentlyWorking} onChange={e => setProjectForm({ ...projectForm, currentlyWorking: e.target.checked })} style={{ width: '16px', height: '16px', accentColor: 'var(--color-accent)' }} />
                                     I am currently working on this project
                                 </label>
 
@@ -495,10 +495,10 @@ const Profile = () => {
                             {/* Contributors */}
                             <div style={fieldGap}>
                                 <label style={labelStyle}>Contributors</label>
-                                <p style={{ fontSize: '0.75rem', color: '#829485', margin: '0 0 0.5rem' }}>Add connections who contributed to the project.</p>
+                                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: '0 0 0.5rem' }}>Add connections who contributed to the project.</p>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: projectForm.contributors.length > 0 ? '0.5rem' : 0 }}>
                                     {projectForm.contributors.map((c, i) => (
-                                        <span key={i} style={{ ...tagStyle, background: '#ECFDF5', color: '#059669' }}>
+                                        <span key={i} style={{ ...tagStyle, background: 'var(--success-bg)', color: 'var(--color-accent-hover)' }}>
                                             {c}
                                             <FaTimes style={{ cursor: 'pointer', fontSize: '0.65rem' }} onClick={() => removeContributor(c)} />
                                         </span>
@@ -526,8 +526,8 @@ const Profile = () => {
                 <div style={overlayStyle} onClick={() => setShowAchModal(false)}>
                     <div style={modalStyle} onClick={e => e.stopPropagation()}>
                         <div style={headerStyle}>
-                            <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#1A2E1D' }}>{editingAch ? 'Edit achievement' : 'Add achievement'}</h3>
-                            <button onClick={() => setShowAchModal(false)} style={{ background: 'none', border: 'none', color: '#829485', cursor: 'pointer', fontSize: '1.2rem' }}><FaTimes /></button>
+                            <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--color-primary)' }}>{editingAch ? 'Edit achievement' : 'Add achievement'}</h3>
+                            <button onClick={() => setShowAchModal(false)} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: '1.2rem' }}><FaTimes /></button>
                         </div>
                         <form onSubmit={handleAchSubmit} style={bodyStyle}>
                             <div style={fieldGap}>

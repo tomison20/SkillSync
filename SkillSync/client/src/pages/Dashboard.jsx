@@ -31,7 +31,7 @@ const Dashboard = () => {
             justifyContent: 'center',
             alignItems: 'center',
             height: '80vh',
-            color: '#829485'
+            color: 'var(--color-text-muted)'
         }}>
             <div className="loader"></div>
             <p style={{ marginLeft: '1rem' }}>Redirecting to your institutional dashboard...</p>

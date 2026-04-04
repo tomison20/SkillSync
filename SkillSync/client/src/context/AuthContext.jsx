@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
         if (!org) return;
         const root = document.documentElement;
         // Institutional theme color
-        root.style.setProperty('--primary-color', org.themeColor || '#0f172a');
+        root.style.setProperty('--primary-color', org.themeColor || 'var(--color-primary)');
         // Add more dynamic variables if needed (e.g., banner height, specific accents)
     };
 
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         // Reset to default branding
         const root = document.documentElement;
-        root.style.setProperty('--primary-color', '#0f172a');
+        root.style.setProperty('--primary-color', 'var(--color-primary)');
         window.location.href = '/login';
     };
 

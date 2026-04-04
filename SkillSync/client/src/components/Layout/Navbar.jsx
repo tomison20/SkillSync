@@ -1,11 +1,79 @@
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
+
+const ThemeToggle = ({ theme, onToggle }) => (
+    <button
+        onClick={onToggle}
+        aria-label="Toggle theme"
+        style={{
+            position: 'relative',
+            width: '52px',
+            height: '28px',
+            borderRadius: '9999px',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '3px',
+            transition: 'background 300ms ease',
+            background: theme === 'dark'
+                ? 'var(--color-accent)'
+                : 'var(--color-border-dark)',
+            display: 'flex',
+            alignItems: 'center',
+            flexShrink: 0
+        }}
+    >
+        <span style={{
+            position: 'absolute',
+            width: '22px',
+            height: '22px',
+            borderRadius: '50%',
+            background: '#FFFFFF',
+            transition: 'transform 300ms var(--ease-spring)',
+            transform: theme === 'dark' ? 'translateX(24px)' : 'translateX(0px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+        }}>
+            {theme === 'dark' ? (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                          fill="#1A2E1D" stroke="#1A2E1D" strokeWidth="2"
+                          strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+            ) : (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="5" fill="#4A7C59" stroke="#4A7C59" strokeWidth="2"/>
+                    <line x1="12" y1="1" x2="12" y2="3" stroke="#4A7C59" strokeWidth="2" strokeLinecap="round"/>
+                    <line x1="12" y1="21" x2="12" y2="23" stroke="#4A7C59" strokeWidth="2" strokeLinecap="round"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="#4A7C59" strokeWidth="2" strokeLinecap="round"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="#4A7C59" strokeWidth="2" strokeLinecap="round"/>
+                    <line x1="1" y1="12" x2="3" y2="12" stroke="#4A7C59" strokeWidth="2" strokeLinecap="round"/>
+                    <line x1="21" y1="12" x2="23" y2="12" stroke="#4A7C59" strokeWidth="2" strokeLinecap="round"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="#4A7C59" strokeWidth="2" strokeLinecap="round"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="#4A7C59" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+            )}
+        </span>
+    </button>
+);
 
 const Navbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { user, logout } = useAuth();
+    const [theme, setTheme] = useState(localStorage.getItem('skillsync-theme') || 'light');
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('skillsync-theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    };
 
     const handleLogout = async () => {
         try {
@@ -37,7 +105,7 @@ const Navbar = () => {
 
     return (
         <nav style={{
-            background: 'rgba(247,249,245,0.96)',
+            background: 'var(--color-bg-card)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             borderBottom: '1px solid var(--color-border)',
@@ -45,7 +113,7 @@ const Navbar = () => {
             position: 'sticky',
             top: 0,
             zIndex: 200,
-            boxShadow: '0 2px 8px rgba(26,46,29,0.08), 0 1px 2px rgba(26,46,29,0.04)'
+            boxShadow: 'var(--shadow-sm)'
         }}>
             <div className="container" style={{
                 display: 'flex',
@@ -57,22 +125,21 @@ const Navbar = () => {
                     fontFamily: 'var(--font-serif)',
                     fontSize: '1.4rem',
                     fontWeight: '700',
-                    color: '#4A7C59',
+                    color: 'var(--color-accent)',
                     letterSpacing: '-0.025em',
                     textDecoration: 'none',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem'
                 }}>
-                    <span style={{ fontSize: '1.6rem' }}>❖</span> SkillSync
+                    SkillSync
                 </Link>
 
                 {/* Navigation Links */}
-                <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
 
                     {user ? (
                         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-                            {/* Common link for all logged-in users */}
                             <Link to="/gigs" style={navLinkStyle('/gigs')}>
                                 Opportunities
                             </Link>
@@ -93,24 +160,26 @@ const Navbar = () => {
                                 </Link>
                             )}
 
-                            <div style={{ width: '1px', height: '20px', background: '#D8EAD0' }}></div>
+                            <div style={{ width: '1px', height: '20px', background: 'var(--color-border)' }}></div>
 
                             <Link to={getDashboardPath()} style={navLinkStyle('/dashboard')}>
                                 Dashboard
                             </Link>
 
-                            {/* User info + logout */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            {/* User info + theme + logout */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                                <ThemeToggle theme={theme} onToggle={toggleTheme} />
+
                                 <Link to="/profile" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <div style={{
                                         width: 30,
                                         height: 30,
                                         borderRadius: '50%',
                                         background: user.role === 'organizer'
-                                            ? 'linear-gradient(135deg, #2D5A3D, #1E3D2A)'
+                                            ? 'linear-gradient(135deg, var(--accent-700), var(--accent-800))'
                                             : user.role === 'admin'
                                                 ? 'linear-gradient(135deg, #1A2E1D, #2D5A3D)'
-                                                : 'linear-gradient(135deg, #4A7C59, #3D6B4A)',
+                                                : 'linear-gradient(135deg, var(--color-accent), var(--color-accent-hover))',
                                         color: 'white',
                                         display: 'flex',
                                         alignItems: 'center',
@@ -142,6 +211,7 @@ const Navbar = () => {
                         </div>
                     ) : (
                         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                            <ThemeToggle theme={theme} onToggle={toggleTheme} />
                             <Link to="/login" style={{
                                 color: 'var(--color-secondary)',
                                 fontWeight: '500',

@@ -11,7 +11,8 @@ const messageSchema = new mongoose.Schema({
     content: { type: String, default: '' },
     attachmentUrl: { type: String },
     attachmentOrigName: { type: String },
-    read: { type: Boolean, default: false }
+    read: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false }
 }, { timestamps: true });
 
 const Message = mongoose.model('Message', messageSchema);

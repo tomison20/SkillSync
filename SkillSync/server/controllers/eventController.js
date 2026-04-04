@@ -498,3 +498,59 @@ export const sendDutyLeaveEmail = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// @desc    Add photo to event
+// @route   POST /api/events/:id/photos
+// @access  Private (Volunteer who participated + Organizer)
+export const addEventPhoto = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+        if (!event) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+
+        const { imageUrl, caption, lat, lng } = req.body;
+        if (!imageUrl) {
+            return res.status(400).json({ message: 'Image URL is required' });
+        }
+
+        // Check authorization: organizer, co-organizer, or registered volunteer
+        const isOrganizer = event.organizer.toString() === req.user._id.toString();
+        const isCoOrganizer = event.coOrganizers.some(id => id.toString() === req.user._id.toString());
+        const isVolunteer = event.volunteers.some(v => v.user.toString() === req.user._id.toString());
+
+        if (!isOrganizer && !isCoOrganizer && !isVolunteer) {
+            return res.status(403).json({ message: 'Only event participants can upload photos.' });
+        }
+
+        event.photos.push({
+            uploadedBy: req.user._id,
+            imageUrl,
+            caption: caption || '',
+            geolocation: (lat && lng) ? { lat: parseFloat(lat), lng: parseFloat(lng) } : undefined
+        });
+
+        await event.save();
+        res.status(201).json({ message: 'Photo added successfully', photos: event.photos });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get event photos
+// @route   GET /api/events/:id/photos
+// @access  Protected
+export const getEventPhotos = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id)
+            .select('photos')
+            .populate('photos.uploadedBy', 'name avatar');
+        if (!event) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+        res.json(event.photos);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+

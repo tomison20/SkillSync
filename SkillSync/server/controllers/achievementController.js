@@ -18,14 +18,15 @@ export const getMyAchievements = async (req, res) => {
 // @route   POST /api/achievements
 export const createAchievement = async (req, res) => {
     try {
-        const { title, description, date, certificateLink } = req.body;
+        const { title, description, date, certificateLink, certificateFile } = req.body;
         const achievement = await Achievement.create({
             student: req.user._id,
             organization: req.user.organization,
             title,
             description,
             date,
-            certificateLink
+            certificateLink,
+            certificateFile
         });
         res.status(201).json(achievement);
     } catch (error) {

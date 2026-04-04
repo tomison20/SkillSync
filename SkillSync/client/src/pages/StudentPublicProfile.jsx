@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import LogoLoop from '../components/UI/LogoLoop';
-import { FaGithub, FaLinkedin, FaGlobe, FaLink, FaEnvelope, FaUserPlus, FaUserCheck, FaFilePdf, FaTrophy } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaGlobe, FaLink, FaEnvelope, FaUserPlus, FaUserCheck, FaFilePdf, FaTrophy, FaFlag } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 
 const StudentPublicProfile = () => {
@@ -15,6 +15,10 @@ const StudentPublicProfile = () => {
     const [followersCount, setFollowersCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [reportReason, setReportReason] = useState('inappropriate_behavior');
+    const [reportDescription, setReportDescription] = useState('');
+    const [reportStatus, setReportStatus] = useState('');
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -50,6 +54,19 @@ const StudentPublicProfile = () => {
         } catch (err) {
             console.error(err);
             alert(err.response?.data?.message || 'Action failed');
+        }
+    };
+
+    const handleReportUser = async () => {
+        try {
+            await api.post(`/users/${id}/report`, { reason: reportReason, description: reportDescription });
+            setReportStatus('Report submitted successfully.');
+            setShowReportModal(false);
+            setReportDescription('');
+            setTimeout(() => setReportStatus(''), 4000);
+        } catch (err) {
+            setReportStatus(err.response?.data?.message || 'Failed to submit report.');
+            setTimeout(() => setReportStatus(''), 4000);
         }
     };
 
@@ -108,15 +125,23 @@ const StudentPublicProfile = () => {
                                 >
                                     {isFollowing ? <><FaUserCheck /> Following</> : <><FaUserPlus /> Follow</>}
                                 </button>
-                                <Link to={`/chat/${profile._id}`} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: '#1A2E1D' }}>
+                                <Link to={`/chat/${profile._id}`} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: 'var(--color-primary)' }}>
                                     <FaEnvelope /> Message
                                 </Link>
+                                <button
+                                    onClick={() => setShowReportModal(true)}
+                                    className="btn btn-outline"
+                                    style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1rem', color: 'var(--color-error)', borderColor: 'var(--error-border)' }}
+                                    title="Report this user"
+                                >
+                                    <FaFlag /> Report
+                                </button>
                             </div>
                         )}
 
                         {profile.resume && (
                             <div style={{ display: 'flex' }}>
-                                <a href={`http://localhost:5000${profile.resume}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: '#DC2626' }}>
+                                <a href={`http://localhost:5000${profile.resume}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: 'var(--color-error)' }}>
                                     <FaFilePdf /> View Resume
                                 </a>
                             </div>
@@ -180,7 +205,7 @@ const StudentPublicProfile = () => {
                                     {item.description && <p style={{ margin: '0 0 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)', flex: 1 }}>{item.description}</p>}
                                     <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
                                         {(item.link || item.projectLink) && <a href={item.projectLink || item.link} target="_blank" rel="noreferrer" style={{ color: 'var(--color-primary)', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 500 }}>View Project →</a>}
-                                        {item.portfolioPDF && <a href={`http://localhost:5000${item.portfolioPDF}`} target="_blank" rel="noreferrer" style={{ color: '#DC2626', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 500, marginLeft: '1rem' }}><FaFilePdf /> PDF Document</a>}
+                                        {item.portfolioPDF && <a href={`http://localhost:5000${item.portfolioPDF}`} target="_blank" rel="noreferrer" style={{ color: 'var(--color-error)', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 500, marginLeft: '1rem' }}><FaFilePdf /> PDF Document</a>}
                                     </div>
                                 </div>
                             ))}
@@ -195,7 +220,7 @@ const StudentPublicProfile = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {profile.achievements.map((ach, index) => (
                                 <div key={ach._id || index} style={{ padding: '1rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(74, 124, 89, 0.1)', color: '#4A7C59', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(74, 124, 89, 0.1)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                         <FaTrophy size={20} />
                                     </div>
                                     <div>
@@ -209,6 +234,43 @@ const StudentPublicProfile = () => {
                     </div>
                 )}
             </div>
+
+            {/* Report Status Toast */}
+            {reportStatus && (
+                <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '0.75rem 1.25rem', fontSize: '0.85rem', boxShadow: 'var(--shadow-lg)', zIndex: 1000, color: 'var(--color-text-main)' }}>
+                    {reportStatus}
+                </div>
+            )}
+
+            {/* Report Modal */}
+            {showReportModal && (
+                <div className="modal-overlay" onClick={() => setShowReportModal(false)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '450px' }}>
+                        <div className="modal-header">
+                            <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}><FaFlag style={{ color: 'var(--color-error)' }} /> Report User</h3>
+                            <button className="modal-close" onClick={() => setShowReportModal(false)}>&times;</button>
+                        </div>
+                        <div className="input-group">
+                            <label className="label">Reason</label>
+                            <select className="input" value={reportReason} onChange={(e) => setReportReason(e.target.value)}>
+                                <option value="inappropriate_behavior">Inappropriate Behavior</option>
+                                <option value="spam">Spam</option>
+                                <option value="harassment">Harassment</option>
+                                <option value="fake_profile">Fake Profile</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div className="input-group">
+                            <label className="label">Details (Optional)</label>
+                            <textarea className="textarea" value={reportDescription} onChange={(e) => setReportDescription(e.target.value)} placeholder="Describe the issue..." rows={3} />
+                        </div>
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            <button className="btn btn-outline" onClick={() => setShowReportModal(false)} style={{ flex: 1 }}>Cancel</button>
+                            <button className="btn btn-danger" onClick={handleReportUser} style={{ flex: 1, background: 'var(--color-error)', color: 'white', borderColor: 'var(--color-error)' }}>Submit Report</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

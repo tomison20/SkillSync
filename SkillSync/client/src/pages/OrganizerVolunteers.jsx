@@ -449,7 +449,7 @@ const OrganizerVolunteers = () => {
                                     <div className="stat-label">Approved Volunteers</div>
                                 </div>
                                 <div className="card stat-card animate-slide-up stagger-2">
-                                    <div className="stat-value" style={{ color: '#2D5A3D' }}>{volunteersRequired || '∞'}</div>
+                                    <div className="stat-value" style={{ color: 'var(--accent-700)' }}>{volunteersRequired || '∞'}</div>
                                     <div className="stat-label">Required Volunteers</div>
                                 </div>
                                 <div className="card stat-card animate-slide-up stagger-3">
@@ -465,13 +465,13 @@ const OrganizerVolunteers = () => {
                                         <span>Volunteer Capacity</span>
                                         <span>{approved} / {volunteersRequired}</span>
                                     </div>
-                                    <div style={{ height: '8px', borderRadius: '4px', background: '#D8EAD0', overflow: 'hidden' }}>
+                                    <div style={{ height: '8px', borderRadius: '4px', background: 'var(--color-border)', overflow: 'hidden' }}>
                                         <div style={{
                                             height: '100%',
                                             width: `${Math.min((approved / volunteersRequired) * 100, 100)}%`,
                                             background: approved >= volunteersRequired
                                                 ? 'linear-gradient(90deg, #059669, #047857)'
-                                                : 'linear-gradient(90deg, #4A7C59, #3D6B4A)',
+                                                : 'linear-gradient(90deg, var(--color-accent), var(--color-accent-hover))',
                                             borderRadius: '4px',
                                             transition: 'width 0.5s ease'
                                         }}></div>
@@ -578,7 +578,7 @@ const OrganizerVolunteers = () => {
                                                         <td>{app.class}</td>
                                                         <td>
                                                             {app.studentId?.resume ? (
-                                                                <a href={`http://localhost:5000${app.studentId.resume}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#DC2626', textDecoration: 'none', fontWeight: 500 }}>
+                                                                <a href={`http://localhost:5000${app.studentId.resume}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-error)', textDecoration: 'none', fontWeight: 500 }}>
                                                                     <FaFilePdf /> View
                                                                 </a>
                                                             ) : '—'}
@@ -793,7 +793,7 @@ const OrganizerVolunteers = () => {
                                                                         </button>
                                                                         <button
                                                                             className="btn btn-outline btn-sm"
-                                                                            style={{ color: '#EF4444', borderColor: '#EF4444' }}
+                                                                            style={{ color: 'var(--color-error)', borderColor: 'var(--color-error)' }}
                                                                             onClick={() => handleRemoveEventVolunteer(vol._id)}      
                                                                         >
                                                                             <FaTrash /> Remove

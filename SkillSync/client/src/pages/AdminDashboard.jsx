@@ -194,7 +194,7 @@ const AdminDashboard = () => {
                                         <tr key={req._id}>
                                             <td>
                                                 <strong style={{ display: 'block' }}>{req.name}</strong>
-                                                <code style={{ fontSize: '0.75rem', background: '#F1F5F9', padding: '2px 6px', borderRadius: '4px' }}>{req.code}</code>
+                                                <code style={{ fontSize: '0.75rem', background: 'var(--color-bg-elevated)', padding: '2px 6px', borderRadius: '4px' }}>{req.code}</code>
                                                 {req.domain && <span style={{ marginLeft: '0.5rem', fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{req.domain}</span>}
                                             </td>
                                             <td>
@@ -295,7 +295,7 @@ const AdminDashboard = () => {
                                                 </td>
                                                 <td>
                                                     {u.organization?.name}
-                                                    {u.organization?.uniqueCode && <code style={{ display: 'block', mt: '4px', fontSize: '0.7rem', background: '#F1F5F9', padding: '2px 6px', borderRadius: '4px', width: 'max-content' }}>{u.organization.uniqueCode}</code>}
+                                                    {u.organization?.uniqueCode && <code style={{ display: 'block', mt: '4px', fontSize: '0.7rem', background: 'var(--color-bg-elevated)', padding: '2px 6px', borderRadius: '4px', width: 'max-content' }}>{u.organization.uniqueCode}</code>}
                                                 </td>
                                                 <td>
                                                     {u.isDisabled ? (
@@ -358,6 +358,7 @@ const AdminDashboard = () => {
                                         <tr>
                                             <th>Institution</th>
                                             <th>Unique Code</th>
+                                            <th>Organizer Code</th>
                                             <th>Domain</th>
                                             <th>Created By</th>
                                             <th style={{ textAlign: 'right' }}>Actions</th>
@@ -368,12 +369,21 @@ const AdminDashboard = () => {
                                             <tr key={org._id}>
                                                 <td>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                                        <div style={{ width: 12, height: 12, borderRadius: '50%', background: org.themeColor || '#ccc' }}></div>
+                                                        <div style={{ width: 12, height: 12, borderRadius: '50%', background: org.themeColor || 'var(--color-border-dark)' }}></div>
                                                         <strong style={{ display: 'block' }}>{org.name}</strong>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <code style={{ fontSize: '0.8rem', background: '#F1F5F9', padding: '2px 6px', borderRadius: '4px' }}>{org.uniqueCode}</code>
+                                                    <code style={{ fontSize: '0.8rem', background: 'var(--color-bg-elevated)', padding: '2px 6px', borderRadius: '4px' }}>{org.uniqueCode}</code>
+                                                </td>
+                                                <td>
+                                                    {org.organizerCode ? (
+                                                        <code style={{ fontSize: '0.8rem', background: 'var(--color-bg-elevated)', padding: '2px 6px', borderRadius: '4px', border: '1px solid var(--color-border)' }}>
+                                                            {org.organizerCode}
+                                                        </code>
+                                                    ) : (
+                                                        <span style={{ color: 'var(--color-text-muted)' }}>-</span>
+                                                    )}
                                                 </td>
                                                 <td>{org.domain || '-'}</td>
                                                 <td>

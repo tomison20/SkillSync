@@ -61,6 +61,18 @@ const userSchema = new mongoose.Schema({
     // Career Documents
     resume: { type: String, default: '' }, // URL to uploaded Resume PDF 
 
+    // Report & Ban System
+    reportCount: { type: Number, default: 0 },
+    isBanned: { type: Boolean, default: false },
+    banExpiry: { type: Date },
+
+    // Password Reset
+    resetPasswordToken: { type: String },
+    resetPasswordExpiry: { type: Date },
+
+    // OAuth
+    googleId: { type: String },
+
     createdAt: { type: Date, default: Date.now }
 });
 

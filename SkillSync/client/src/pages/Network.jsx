@@ -43,7 +43,7 @@ const Network = () => {
         <div className="container animate-fade-in" style={{ padding: '4rem 0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', flexWrap: 'wrap', gap: '1.5rem' }}>
                 <div>
-                    <span className="badge" style={{ background: '#D8EAD0', color: '#4A5E4D', marginBottom: '0.5rem' }}>
+                    <span className="badge" style={{ background: 'var(--color-border)', color: 'var(--color-secondary)', marginBottom: '0.5rem' }}>
                         {user?.organization?.name || 'Organization'} Workspace
                     </span>
                     <h1>College Directory</h1>

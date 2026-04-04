@@ -11,7 +11,9 @@ import {
     exportEventVolunteers,
     uploadCertificateTemplate,
     generateCertificates,
-    sendDutyLeaveEmail
+    sendDutyLeaveEmail,
+    addEventPhoto,
+    getEventPhotos
 } from '../controllers/eventController.js';
 import { protect, authorize } from '../middleware/authMiddleware.js';
 
@@ -47,5 +49,10 @@ router.route('/:id/generate-certificates')
 
 router.route('/:id/volunteers/:volunteerId/duty-leave-email')
     .post(protect, authorize('organizer', 'admin'), sendDutyLeaveEmail);
+
+// Event Photos
+router.route('/:id/photos')
+    .get(protect, getEventPhotos)
+    .post(protect, addEventPhoto);
 
 export default router;

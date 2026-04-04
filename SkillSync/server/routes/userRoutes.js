@@ -7,6 +7,7 @@ import {
     unfollowUser,
     getOrganizationMembers
 } from '../controllers/userController.js';
+import { reportUser } from '../controllers/reportController.js';
 import { protect, authorize } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -20,6 +21,9 @@ router.route('/network/:id').get(protect, authorize('student', 'organizer', 'adm
 
 router.route('/:id/follow').post(protect, authorize('student'), followUser);
 router.route('/:id/unfollow').post(protect, authorize('student'), unfollowUser);
+
+// Report user
+router.route('/:id/report').post(protect, authorize('student', 'organizer'), reportUser);
 
 // Organization functionality (Organizer only)
 router.route('/organization/members').get(protect, authorize('organizer', 'admin'), getOrganizationMembers);

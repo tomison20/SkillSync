@@ -5,7 +5,10 @@ import {
     logoutUser,
     getUserProfile,
     updateUserProfile,
-    requestOrganization
+    requestOrganization,
+    forgotPassword,
+    resetPassword,
+    googleAuth
 } from '../controllers/authController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -13,7 +16,12 @@ const router = express.Router();
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
+router.post('/google', googleAuth);
 router.post('/logout', logoutUser);
+
+// Password Reset
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password/:token', resetPassword);
 
 // Ensure profile is protected here too if accessed via /api/auth/profile
 router.get('/profile', protect, getUserProfile);

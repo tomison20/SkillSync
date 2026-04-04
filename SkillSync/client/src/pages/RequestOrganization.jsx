@@ -53,7 +53,7 @@ const RequestOrganization = () => {
                     Can't find your institution? Submit a request to add your college to SkillSync's academic network.
                 </p>
 
-                {error && <div className="badge badge-status" style={{ background: '#FEE2E2', color: '#B91C1C', marginBottom: '1.5rem', width: '100%', padding: '0.75rem' }}>{error}</div>}
+                {error && <div className="badge badge-status" style={{ background: 'var(--error-bg)', color: 'var(--color-error)', marginBottom: '1.5rem', width: '100%', padding: '0.75rem' }}>{error}</div>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="grid-layout" style={{ gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>

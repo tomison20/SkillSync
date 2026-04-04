@@ -16,7 +16,7 @@ const Home = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 overflow: 'hidden',
-                color: '#fff'
+                color: 'var(--color-bg-card)'
             }}>
                 <div style={{
                     position: 'absolute',
@@ -44,7 +44,7 @@ const Home = () => {
                         display: 'inline-block',
                         padding: '0.5rem 1rem',
                         border: '1px solid rgba(255,255,255,0.3)',
-                        color: '#D8EAD0',
+                        color: 'var(--color-border)',
                         borderRadius: '999px',
                         fontSize: '0.85rem',
                         fontWeight: '500',
@@ -61,7 +61,7 @@ const Home = () => {
                         marginBottom: '1.5rem',
                         letterSpacing: '-0.02em',
                         lineHeight: 1.1,
-                        color: '#FFFFFF',
+                        color: 'var(--color-bg-card)',
                         fontFamily: 'var(--font-serif)',
                         fontWeight: '600'
                     }}>
@@ -70,7 +70,7 @@ const Home = () => {
 
                     <p style={{
                         fontSize: '1.35rem',
-                        color: '#B8D4AE',
+                        color: 'var(--color-border-dark)',
                         marginBottom: '3.5rem',
                         lineHeight: 1.6,
                         fontWeight: '300',
@@ -86,8 +86,8 @@ const Home = () => {
                                 <Link to={`/dashboard/${user.role}`} className="btn" style={{
                                     padding: '1rem 2.5rem',
                                     fontSize: '1.1rem',
-                                    background: '#fff',
-                                    color: '#1A2E1D',
+                                    background: 'var(--color-bg-card)',
+                                    color: 'var(--color-primary)',
                                     fontWeight: '600',
                                     border: '1px solid #fff'
                                 }}>
@@ -97,7 +97,7 @@ const Home = () => {
                                     padding: '1rem 2.5rem',
                                     fontSize: '1.1rem',
                                     background: 'transparent',
-                                    color: '#fff',
+                                    color: 'var(--color-bg-card)',
                                     border: '1px solid rgba(255,255,255,0.5)',
                                     fontWeight: '500'
                                 }}>
@@ -109,8 +109,8 @@ const Home = () => {
                                 <Link to="/signup" className="btn" style={{
                                     padding: '1rem 2.5rem',
                                     fontSize: '1.1rem',
-                                    background: '#fff',
-                                    color: '#1A2E1D',
+                                    background: 'var(--color-bg-card)',
+                                    color: 'var(--color-primary)',
                                     fontWeight: '600',
                                     border: '1px solid #fff'
                                 }}>
@@ -123,7 +123,7 @@ const Home = () => {
             </section>
 
             {/* Institutional Trust Bar */}
-            <div style={{ borderBottom: '1px solid #D8EAD0', background: '#F0F5EC', padding: '3rem 0' }}>
+            <div style={{ borderBottom: '1px solid #D8EAD0', background: 'var(--color-bg-elevated)', padding: '3rem 0' }}>
                 <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem', textAlign: 'center' }}>
                     <div style={{ padding: '0 1rem' }}>
                         <div style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>Built for Your Institution</div>
@@ -141,33 +141,33 @@ const Home = () => {
             </div>
 
             {/* Value Preposition */}
-            <section style={{ padding: '8rem 0', background: 'white' }}>
+            <section style={{ padding: '8rem 0', background: 'var(--color-bg-card)' }}>
                 <div className="container">
                     <div className="grid-layout" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4rem' }}>
                         <div>
-                            <div style={{ width: 50, height: 50, background: '#F0F5EC', borderRadius: '50%', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#4A7C59' }}>
+                            <div style={{ width: 50, height: 50, background: 'var(--color-bg-elevated)', borderRadius: '50%', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-accent)' }}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                             </div>
                             <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Verified Opportunity System</h3>
-                            <p style={{ color: '#829485', lineHeight: 1.7 }}>
+                            <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.7 }}>
                                 All gigs and volunteering opportunities are verified by authorized organizers within your institution to ensure transparency and trust.
                             </p>
                         </div>
                         <div>
-                            <div style={{ width: 50, height: 50, background: '#F0FDF4', borderRadius: '50%', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#14532D' }}>
+                            <div style={{ width: 50, height: 50, background: 'var(--success-bg)', borderRadius: '50%', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-800)' }}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                             </div>
                             <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Verified Experience</h3>
-                            <p style={{ color: '#829485', lineHeight: 1.7 }}>
+                            <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.7 }}>
                                 Every completed gig and attended event is cryptographically verified and added to your permanent institutional record.
                             </p>
                         </div>
                         <div>
-                            <div style={{ width: 50, height: 50, background: '#FFF7ED', borderRadius: '50%', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7C2D12' }}>
+                            <div style={{ width: 50, height: 50, background: 'var(--warning-bg)', borderRadius: '50%', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-warning)' }}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                             </div>
                             <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Campus Selection</h3>
-                            <p style={{ color: '#829485', lineHeight: 1.7 }}>
+                            <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.7 }}>
                                 Access opportunities exclusive to your institution, fostering a trusted local community of high-achieving peers.
                             </p>
                         </div>

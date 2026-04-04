@@ -141,7 +141,7 @@ const StudentProfile = () => {
                         </div>
                         <div style={{ display: 'flex', gap: '0.75rem' }}>
                             {profile?.resume && (
-                                <a href={`http://localhost:5000${profile.resume}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#DC2626', color: 'white', border: 'none', textDecoration: 'none' }}>
+                                <a href={`http://localhost:5000${profile.resume}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--color-error)', color: 'white', border: 'none', textDecoration: 'none' }}>
                                     <FaFilePdf /> View Resume
                                 </a>
                             )}
@@ -230,13 +230,13 @@ const StudentProfile = () => {
                                     />
                                     <span style={{
                                         position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
-                                        backgroundColor: form.isDiscoverable ? '#007BFF' : '#333',
+                                        backgroundColor: form.isDiscoverable ? 'var(--color-accent)' : 'var(--color-text-secondary)',
                                         transition: '.4s', borderRadius: '34px'
                                     }}>
                                         <span style={{
                                             position: 'absolute', content: '""', height: '20px', width: '20px',
                                             left: form.isDiscoverable ? '26px' : '4px', bottom: '4px',
-                                            backgroundColor: 'white', transition: '.4s', borderRadius: '50%'
+                                            backgroundColor: 'var(--color-bg-card)', transition: '.4s', borderRadius: '50%'
                                         }}></span>
                                     </span>
                                 </label>
