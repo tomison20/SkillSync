@@ -3,7 +3,7 @@ import Navbar from './components/Layout/Navbar';
 import Footer from './components/Layout/Footer';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
-
+import { Analytics } from '@vercel/analytics/react';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -89,6 +89,7 @@ function App() {
                 <Route path="/dashboard/admin" element={<AdminDashboard />} />
               </Route>
             </Routes>
+            <Analytics />
           </main>
           <Footer />
         </div>
