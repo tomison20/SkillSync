@@ -90,14 +90,14 @@ const GigDetails = () => {
                 <span className={`badge ${gig.status === 'open' ? 'badge-success' : 'badge-status'}`} style={{ marginBottom: '1rem' }}>
                     {gig.status.toUpperCase()}
                 </span>
-                <h1 style={{ fontSize: '3rem', margin: '0 0 1rem' }}>{gig.title}</h1>
-                <div style={{ display: 'flex', gap: '2rem', color: 'var(--color-text-muted)' }}>
+                <h1 className="gig-detail-title" style={{ fontSize: '3rem', margin: '0 0 1rem' }}>{gig.title}</h1>
+                <div className="gig-detail-meta" style={{ display: 'flex', gap: '2rem', color: 'var(--color-text-muted)' }}>
                     <span>Deadline: <strong>{new Date(gig.deadline).toLocaleDateString()}</strong></span>
                     <span>Institutional Opportunity</span>
                 </div>
             </div>
 
-            <div className="grid-layout" style={{ gridTemplateColumns: '2fr 1fr' }}>
+            <div className="grid-layout gig-detail-grid" style={{ gridTemplateColumns: '2fr 1fr' }}>
                 <div className="card">
                     <h3>Description</h3>
                     <p style={{ whiteSpace: 'pre-wrap', marginBottom: '2rem', color: 'var(--color-accent-hover)' }}>{gig.description}</p>

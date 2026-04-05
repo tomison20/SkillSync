@@ -136,10 +136,10 @@ const StudentDashboard = () => {
         if (!file) return;
 
         const formData = new FormData();
-        formData.append('portfolioPDF', file); // Reusing the PDF upload endpoint which accepts PDF/Images
+        formData.append('certificate', file); 
 
         try {
-            const { data } = await api.post('/upload/pdf', formData, {
+            const { data } = await api.post('/upload/certificate', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             setAchievementForm({ ...achievementForm, certificateLink: (data.url?.startsWith('http') ? data.url : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${data.url}`) });
@@ -230,7 +230,7 @@ const StudentDashboard = () => {
                     {/* Profile Card with Social Icons */}
                     {userProfile && (
                         <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #4A7C59' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+                            <div className="dash-profile-card" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
                                 <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-accent), var(--accent-700))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
                                     {userProfile.avatar ? <img src={(userProfile.avatar?.startsWith('http') ? userProfile.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${userProfile.avatar}`)} alt={userProfile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : userProfile.name?.charAt(0)}
                                 </div>
@@ -243,7 +243,7 @@ const StudentDashboard = () => {
                                         {userProfile.headline || userProfile.role?.toUpperCase()}
                                     </p>
                                 </div>
-                                <div style={{ display: 'flex', flexGrow: 1, maxWidth: '400px', marginLeft: 'auto', overflow: 'hidden', alignItems: 'center' }}>
+                                <div className="profile-social-loop" style={{ display: 'flex', flexGrow: 1, maxWidth: '400px', marginLeft: 'auto', overflow: 'hidden', alignItems: 'center' }}>
                                     <LogoLoop
                                         logos={[
                                             ...(userProfile.github ? [{ node: <FaGithub size={24} color="#2D5A3D" />, title: 'GitHub', href: userProfile.github }] : []),
@@ -470,11 +470,19 @@ const StudentDashboard = () => {
                                                     <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', margin: '0 0 0.3rem' }}>{ach.description}</p>
                                                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                                         <small style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}><FaCalendarAlt /> {new Date(ach.date).toLocaleDateString()}</small>
-                                                        {ach.certificateLink && (
-                                                            <a href={ach.certificateLink} target="_blank" rel="noreferrer" style={{ fontSize: '0.8rem' }}>
-                                                                <FaLink /> View Certificate
-                                                            </a>
-                                                        )}
+                                                        {(() => {
+                                                            const rawCert = ach.certificateLink || ach.certificateFile;
+                                                            const certUrl = rawCert
+                                                                ? (rawCert.startsWith('http')
+                                                                    ? rawCert
+                                                                    : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${rawCert.startsWith('/') ? '' : '/'}${rawCert}`)
+                                                                : null;
+                                                            return certUrl ? (
+                                                                <a href={certUrl} target="_blank" rel="noreferrer" style={{ fontSize: '0.8rem' }}>
+                                                                    <FaLink /> View Certificate
+                                                                </a>
+                                                            ) : null;
+                                                        })()}
                                                     </div>
                                                 </div>
                                                 <div style={{ display: 'flex', gap: '0.4rem', flexShrink: 0, marginLeft: '1rem' }}>

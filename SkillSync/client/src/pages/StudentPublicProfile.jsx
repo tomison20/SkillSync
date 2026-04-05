@@ -93,11 +93,11 @@ const StudentPublicProfile = () => {
             </button>
 
             {/* Profile Header Card */}
-            <div className="card" style={{ padding: '2.5rem', marginBottom: '2rem', display: 'flex', gap: '2.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                <div style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: 700, flexShrink: 0 }}>
+            <div className="card profile-header-card" style={{ padding: '2.5rem', marginBottom: '2rem', display: 'flex', gap: '2.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <div className="profile-avatar" style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: 700, flexShrink: 0 }}>
                     {profile.avatar ? <img src={(profile.avatar?.startsWith('http') ? profile.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${profile.avatar}`)} alt={profile.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} /> : profile.name.charAt(0)}
                 </div>
-                <div style={{ flex: 1, minWidth: '300px' }}>
+                <div className="profile-info" style={{ flex: 1, minWidth: '300px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
                         <div>
                             <h1 style={{ margin: '0 0 0.5rem', fontSize: '2.5rem', fontWeight: 800 }}>{profile.name}</h1>
@@ -117,7 +117,7 @@ const StudentPublicProfile = () => {
                         </div>
 
                         {currentUser && currentUser._id !== profile._id && currentUser.role === 'student' && (
-                            <div style={{ display: 'flex', gap: '0.75rem' }}>
+                            <div className="profile-action-btns" style={{ display: 'flex', gap: '0.75rem' }}>
                                 <button
                                     onClick={handleFollowToggle}
                                     className={`btn ${isFollowing ? 'btn-secondary' : 'btn-primary'}`}
@@ -125,7 +125,7 @@ const StudentPublicProfile = () => {
                                 >
                                     {isFollowing ? <><FaUserCheck /> Following</> : <><FaUserPlus /> Follow</>}
                                 </button>
-                                <Link to={`/chat/${profile._id}`} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: 'var(--color-primary)' }}>
+                                <Link to={`/chat/${profile._id}`} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: 'var(--color-primary)', textDecoration: 'none' }}>
                                     <FaEnvelope /> Message
                                 </Link>
                                 <button
@@ -141,7 +141,7 @@ const StudentPublicProfile = () => {
 
                         {profile.resume && (
                             <div style={{ display: 'flex' }}>
-                                <a href={(profile.resume?.startsWith('http') ? profile.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${profile.resume}`)} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: 'var(--color-error)' }}>
+                                <a href={(profile.resume?.startsWith('http') ? profile.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${profile.resume}`)} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: 'var(--color-error)', textDecoration: 'none' }}>
                                     <FaFilePdf /> View Resume
                                 </a>
                             </div>
@@ -171,7 +171,7 @@ const StudentPublicProfile = () => {
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
                 {/* About Section */}
                 {profile.bio && (
                     <div className="card">
@@ -218,18 +218,38 @@ const StudentPublicProfile = () => {
                     <div className="card" style={{ gridColumn: '1 / -1' }}>
                         <h3 style={{ margin: '0 0 1.5rem', fontSize: '1.25rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.5rem' }}>Awards & Achievements</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            {profile.achievements.map((ach, index) => (
-                                <div key={ach._id || index} style={{ padding: '1rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(74, 124, 89, 0.1)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                                        <FaTrophy size={20} />
+                            {profile.achievements.map((ach, index) => {
+                                const rawCert = ach.certificateLink || ach.certificateFile;
+                                const certUrl = rawCert
+                                    ? (rawCert.startsWith('http')
+                                        ? rawCert
+                                        : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${rawCert.startsWith('/') ? '' : '/'}${rawCert}`)
+                                    : null;
+
+                                return (
+                                    <div key={ach._id || index} style={{ padding: '1rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                                        <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(74, 124, 89, 0.1)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                            <FaTrophy size={20} />
+                                        </div>
+                                        <div style={{ flex: 1 }}>
+                                            <h4 style={{ margin: '0 0 0.3rem', fontSize: '1.1rem' }}>{ach.title}</h4>
+                                            {ach.description && <p style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{ach.description}</p>}
+                                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                                                {ach.date && (
+                                                    <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
+                                                        {new Date(ach.date).toLocaleDateString()}
+                                                    </span>
+                                                )}
+                                                {certUrl && (
+                                                    <a href={certUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--color-primary)', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                                        <FaFilePdf style={{ color: 'var(--color-error)' }} /> View Certificate
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 style={{ margin: '0 0 0.3rem', fontSize: '1.1rem' }}>{ach.title}</h4>
-                                        {ach.description && <p style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{ach.description}</p>}
-                                        {ach.certificateLink && <a href={ach.certificateLink} target="_blank" rel="noreferrer" style={{ color: 'var(--color-primary)', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 500 }}>View Certificate →</a>}
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 )}

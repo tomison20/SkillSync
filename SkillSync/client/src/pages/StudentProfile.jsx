@@ -130,7 +130,7 @@ const StudentProfile = () => {
             {/* Header */}
             <div className="dashboard-header student-header">
                 <div className="container">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                    <div className="dash-header-content" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                         <div>
                             <p style={{ opacity: 0.7, fontSize: '0.85rem', marginBottom: '0.5rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                                 {user?.organization?.name} • Profile Settings
@@ -139,7 +139,7 @@ const StudentProfile = () => {
                                 Edit Your Profile
                             </h1>
                         </div>
-                        <div style={{ display: 'flex', gap: '0.75rem' }}>
+                        <div className="dashboard-header-actions" style={{ display: 'flex', gap: '0.75rem' }}>
                             {profile?.resume && (
                                 <a href={(profile.resume?.startsWith('http') ? profile.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${profile.resume}`)} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--color-error)', color: 'white', border: 'none', textDecoration: 'none' }}>
                                     <FaFilePdf /> View Resume

@@ -27,6 +27,11 @@ h1, h2 {
   margin-bottom: 0.75em;
 }
 
+/* Fluid typography — scales smoothly between 375px and 1200px screens */
+h1 { font-size: clamp(1.6rem, 4vw + 0.5rem, 2.75rem); }
+h2 { font-size: clamp(1.35rem, 3vw + 0.4rem, 2rem); }
+h3 { font-size: clamp(1.1rem, 2vw + 0.3rem, 1.5rem); }
+
 h3, h4, h5, h6 {
   font-family: var(--font-sans);
   color: var(--color-primary);
@@ -52,7 +57,7 @@ a:hover {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 clamp(1rem, 4vw, 2rem);
 }
 
 /* ===== Buttons ===== */
@@ -684,34 +689,41 @@ a:hover {
     padding: 0 1rem;
   }
 
-  /* --- Grids --- */
-  .dashboard-grid.two-col {
-    grid-template-columns: 1fr;
+  /* --- Prevent horizontal overflow globally --- */
+  body, html {
+    overflow-x: hidden;
   }
-  .grid-3 {
-    grid-template-columns: 1fr;
-  }
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
+
+  /* --- Grids: force single column --- */
+  .dashboard-grid.two-col,
+  .grid-3,
+  .grid-2,
   .grid-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   /* --- Cards --- */
   .card {
     padding: 16px;
+    overflow: hidden;
+    word-break: break-word;
   }
 
   /* --- Dashboard Header --- */
   .dashboard-header {
-    padding: 2rem 0 3rem;
+    padding: 1.5rem 0 2rem;
   }
   .dashboard-header h1 {
-    font-size: 1.6rem !important;
+    font-size: 1.5rem !important;
   }
   .dashboard-header-actions {
     display: none;
+  }
+
+  /* --- Page titles --- */
+  h1 {
+    font-size: 1.75rem !important;
+    word-break: break-word;
   }
 
   /* --- Hero (Home page) --- */
@@ -829,10 +841,76 @@ a:hover {
     gap: 0.75rem !important;
   }
 
+  /* --- Public Profile Header --- */
+  .profile-header-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1.25rem !important;
+    padding: 1.25rem !important;
+  }
+  .profile-header-card .profile-avatar {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 2rem !important;
+  }
+  .profile-header-card .profile-info {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .profile-header-card .profile-info h1 {
+    font-size: 1.6rem !important;
+  }
+  .profile-action-btns {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+  }
+  .profile-action-btns .btn {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.8rem !important;
+    justify-content: center !important;
+  }
+
+  /* --- Dashboard Profile Card --- */
+  .dash-profile-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+  .dash-profile-card .profile-social-loop {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* --- Network / Following grids --- */
+  .following-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  .following-section {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  /* --- Gig Detail: force single column --- */
+  .gig-detail-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .gig-detail-title {
+    font-size: 1.5rem !important;
+  }
+  .gig-detail-meta {
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+  }
+
   /* --- Footer --- */
   .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
   }
   .footer-bottom {
     flex-direction: column;
@@ -849,6 +927,12 @@ a:hover {
   .hero-section {
     height: 75vh !important;
     min-height: 500px;
+  }
+
+  /* --- Profile bio/skills two-col stacking --- */
+  .profile-two-col {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
   }
 }
 

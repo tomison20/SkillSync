@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
@@ -7,6 +8,7 @@ import { GoogleLogin } from '@react-oauth/google';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const { login, user } = useAuth();
@@ -98,13 +100,34 @@ const Login = () => {
                                 Forgot Password?
                             </Link>
                         </label>
-                        <input
-                            type="password"
-                            className="input"
-                            value={password}
-                            onChange={(e) => { setPassword(e.target.value); setError(''); }}
-                            required
-                        />
+                        <div style={{ position: 'relative' }}>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                className="input"
+                                value={password}
+                                onChange={(e) => { setPassword(e.target.value); setError(''); }}
+                                required
+                                style={{ paddingRight: '2.5rem' }}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                style={{
+                                    position: 'absolute',
+                                    right: '10px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'none',
+                                    border: 'none',
+                                    color: 'var(--text-muted)',
+                                    cursor: 'pointer',
+                                    padding: '0 5px'
+                                }}
+                                tabIndex="-1"
+                            >
+                                {showPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" className="btn btn-primary" style={{ width: '100%', marginBottom: '1.5rem' }}>
                         Sign In

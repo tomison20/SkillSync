@@ -200,8 +200,8 @@ const Profile = () => {
         <div className="container" style={{ padding: '4rem 0', maxWidth: '900px' }}>
             {/* Profile Header Card */}
             <div className="card" style={{ marginBottom: '2rem', borderTop: `8px solid var(--color-primary)` }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', gap: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div className="dash-profile-card" style={{ display: 'flex', gap: '1.5rem', flex: 1, minWidth: 0 }}>
                         <div style={{
                             width: 100, height: 100, borderRadius: 'var(--radius-sm)',
                             background: 'var(--color-primary)', display: 'flex',
@@ -225,7 +225,7 @@ const Profile = () => {
                     </Link>
                 </div>
 
-                <div style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+                <div className="profile-two-col" style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
                     <div>
                         <h3>Academic Bio</h3>
                         <p style={{ lineHeight: 1.6, color: 'var(--color-accent-hover)' }}>
@@ -317,7 +317,7 @@ const Profile = () => {
             </section>
 
             {/* Following / Followers */}
-            <section style={{ marginBottom: '3rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+            <section className="following-grid" style={{ marginBottom: '3rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                 <div>
                     <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '2px solid var(--color-border)', paddingBottom: '0.5rem' }}>Following ({user.following?.length || 0})</h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -369,15 +369,23 @@ const Profile = () => {
                 </div>
                 <div style={{ display: 'grid', gap: '1rem' }}>
                     {achievements.length > 0 ? achievements.map((ach) => (
-                        <div key={ach._id} className="card" style={{ padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div key={ach._id} className="card app-card-row" style={{ padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div style={{ flex: 1 }}>
                                 <h4 style={{ margin: '0 0 0.2rem' }}>{ach.title}</h4>
                                 <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>{ach.description}</p>
-                                {ach.certificateLink && (
-                                    <a href={ach.certificateLink} target="_blank" rel="noreferrer" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '0.3rem' }}>
-                                        <FaLink /> View Certificate
-                                    </a>
-                                )}
+                                {(() => {
+                                    const rawCert = ach.certificateLink || ach.certificateFile;
+                                    const certUrl = rawCert
+                                        ? (rawCert.startsWith('http')
+                                            ? rawCert
+                                            : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${rawCert.startsWith('/') ? '' : '/'}${rawCert}`)
+                                        : null;
+                                    return certUrl ? (
+                                        <a href={certUrl} target="_blank" rel="noreferrer" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '0.3rem' }}>
+                                            <FaLink /> View Certificate
+                                        </a>
+                                    ) : null;
+                                })()}
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
                                 <div style={{ fontWeight: 'bold', color: 'var(--color-primary)' }}>

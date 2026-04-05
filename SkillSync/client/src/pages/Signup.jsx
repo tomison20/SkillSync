@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
@@ -13,6 +14,7 @@ const Signup = () => {
         role: 'student',
         organizerCode: ''
     });
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const { login, user } = useAuth();
@@ -102,7 +104,36 @@ const Signup = () => {
                     </div>
                     <div className="input-group">
                         <label className="label">Password</label>
-                        <input type="password" className="input" name="password" value={formData.password} onChange={handleChange} required minLength={6} />
+                        <div style={{ position: 'relative' }}>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                className="input"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                                minLength={6}
+                                style={{ paddingRight: '2.5rem' }}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                style={{
+                                    position: 'absolute',
+                                    right: '10px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'none',
+                                    border: 'none',
+                                    color: 'var(--text-muted)',
+                                    cursor: 'pointer',
+                                    padding: '0 5px'
+                                }}
+                                tabIndex="-1"
+                            >
+                                {showPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+                            </button>
+                        </div>
                     </div>
                     <div className="input-group">
                         <label className="label" style={{ display: 'flex', justifyContent: 'space-between' }}>
