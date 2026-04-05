@@ -61,6 +61,10 @@ app.get('/', (req, res) => {
     res.send('SkillSync API is running...');
 });
 
+app.get('/api/ping', (req, res) => {
+    res.status(200).json({ status: 'ok', message: 'Pong!' });
+});
+
 // Error Handling Middleware
 app.use((err, req, res, next) => {
     console.error(err.stack); // Log for debugging
