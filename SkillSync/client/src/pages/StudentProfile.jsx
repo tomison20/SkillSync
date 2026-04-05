@@ -141,7 +141,7 @@ const StudentProfile = () => {
                         </div>
                         <div style={{ display: 'flex', gap: '0.75rem' }}>
                             {profile?.resume && (
-                                <a href={`http://localhost:5000${profile.resume}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--color-error)', color: 'white', border: 'none', textDecoration: 'none' }}>
+                                <a href={(profile.resume?.startsWith('http') ? profile.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${profile.resume}`)} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--color-error)', color: 'white', border: 'none', textDecoration: 'none' }}>
                                     <FaFilePdf /> View Resume
                                 </a>
                             )}
@@ -163,7 +163,7 @@ const StudentProfile = () => {
                             <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 {form.avatar ? (
                                     <img
-                                        src={`http://localhost:5000${form.avatar}`}
+                                        src={(form.avatar?.startsWith('http') ? form.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${form.avatar}`)}
                                         alt="Avatar Preview"
                                         style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-primary)' }}
                                     />
@@ -205,7 +205,7 @@ const StudentProfile = () => {
                                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                     <input type="file" accept=".pdf" onChange={uploadResumeHandler} style={{ color: 'rgba(255,255,255,0.8)' }} />
                                     {form.resume && (
-                                        <a href={`http://localhost:5000${form.resume}`} target="_blank" rel="noreferrer" style={{ fontSize: '0.85rem', color: 'var(--color-primary)' }}>
+                                        <a href={(form.resume?.startsWith('http') ? form.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${form.resume}`)} target="_blank" rel="noreferrer" style={{ fontSize: '0.85rem', color: 'var(--color-primary)' }}>
                                             View Uploaded Resume
                                         </a>
                                     )}

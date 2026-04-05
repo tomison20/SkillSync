@@ -142,7 +142,7 @@ const StudentDashboard = () => {
             const { data } = await api.post('/upload/pdf', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            setAchievementForm({ ...achievementForm, certificateLink: `http://localhost:5000${data.url}` });
+            setAchievementForm({ ...achievementForm, certificateLink: (data.url?.startsWith('http') ? data.url : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${data.url}`) });
             alert('Certificate file uploaded successfully!');
         } catch (error) {
             console.error(error);
@@ -193,7 +193,7 @@ const StudentDashboard = () => {
                         </div>
                         <div style={{ display: 'flex', gap: '0.75rem' }}>
                             {userProfile?.resume && (
-                                <a href={`http://localhost:5000${userProfile.resume}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--color-error)', color: 'white', border: 'none', textDecoration: 'none' }}>
+                                <a href={(userProfile.resume?.startsWith('http') ? userProfile.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${userProfile.resume}`)} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--color-error)', color: 'white', border: 'none', textDecoration: 'none' }}>
                                     <FaFilePdf /> Resume
                                 </a>
                             )}
@@ -232,7 +232,7 @@ const StudentDashboard = () => {
                         <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #4A7C59' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
                                 <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-accent), var(--accent-700))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
-                                    {userProfile.avatar ? <img src={`http://localhost:5000${userProfile.avatar}`} alt={userProfile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : userProfile.name?.charAt(0)}
+                                    {userProfile.avatar ? <img src={(userProfile.avatar?.startsWith('http') ? userProfile.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${userProfile.avatar}`)} alt={userProfile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : userProfile.name?.charAt(0)}
                                 </div>
                                 <div style={{ flex: 1, minWidth: '200px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
@@ -250,7 +250,7 @@ const StudentDashboard = () => {
                                             ...(userProfile.linkedin ? [{ node: <FaLinkedin size={24} color="#0A66C2" />, title: 'LinkedIn', href: userProfile.linkedin }] : []),
                                             ...(userProfile.twitter ? [{ node: <FaXTwitter size={24} color="#2D5A3D" />, title: 'X', href: userProfile.twitter }] : []),
                                             ...(userProfile.portfolioWebsite ? [{ node: <FaGlobe size={24} color="#059669" />, title: 'Portfolio', href: userProfile.portfolioWebsite }] : []),
-                                            ...(userProfile.resume ? [{ node: <FaFilePdf size={24} color="#DC2626" />, title: 'Resume', href: `http://localhost:5000${userProfile.resume}` }] : []),
+                                            ...(userProfile.resume ? [{ node: <FaFilePdf size={24} color="#DC2626" />, title: 'Resume', href: (userProfile.resume?.startsWith('http') ? userProfile.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${userProfile.resume}`) }] : []),
                                             ...(userProfile.customLinkUrl ? [{ node: <FaLink size={24} color="#6366F1" />, title: userProfile.customLinkName || 'Link', href: userProfile.customLinkUrl }] : [])
                                         ]}
                                         speed={120}
@@ -373,7 +373,7 @@ const StudentDashboard = () => {
                                                             )}
                                                             {app.certificateUrl && (
                                                                 <a 
-                                                                    href={`http://localhost:5000${app.certificateUrl}`} 
+                                                                    href={(app.certificateUrl?.startsWith('http') ? app.certificateUrl : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${app.certificateUrl}`)} 
                                                                     download
                                                                     target="_blank" 
                                                                     rel="noreferrer" 

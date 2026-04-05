@@ -78,7 +78,7 @@ const Network = () => {
                                     color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     fontSize: '1.5rem', fontWeight: 700, flexShrink: 0
                                 }}>
-                                    {student.avatar ? <img src={`http://localhost:5000${student.avatar}`} alt={student.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} /> : student.name.charAt(0)}
+                                    {student.avatar ? <img src={(student.avatar?.startsWith('http') ? student.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${student.avatar}`)} alt={student.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} /> : student.name.charAt(0)}
                                 </div>
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                     <h3 style={{ margin: '0 0 0.25rem', fontSize: '1.15rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{student.name}</h3>

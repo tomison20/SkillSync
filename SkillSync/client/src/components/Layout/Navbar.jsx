@@ -189,7 +189,7 @@ const Navbar = () => {
                                         overflow: 'hidden'
                                     }}>
                                         {user.avatar ?
-                                            <img src={user.avatar.startsWith('http') ? user.avatar : `http://localhost:5000${user.avatar}`} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                                            <img src={user.avatar.startsWith('http') ? user.avatar : (user.avatar?.startsWith('http') ? user.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${user.avatar}`)} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                                             : user.name?.charAt(0)?.toUpperCase()
                                         }
                                     </div>

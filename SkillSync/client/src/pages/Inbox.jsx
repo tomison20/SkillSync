@@ -108,7 +108,7 @@ const Inbox = () => {
                                                     flexShrink: 0
                                                 }}>
                                                     {avatar ? (
-                                                        <img src={`http://localhost:5000${avatar}`} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        <img src={(avatar?.startsWith('http') ? avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${avatar}`)} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                     ) : (
                                                         initials
                                                     )}

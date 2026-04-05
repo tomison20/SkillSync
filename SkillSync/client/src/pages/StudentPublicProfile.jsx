@@ -95,7 +95,7 @@ const StudentPublicProfile = () => {
             {/* Profile Header Card */}
             <div className="card" style={{ padding: '2.5rem', marginBottom: '2rem', display: 'flex', gap: '2.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 <div style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: 700, flexShrink: 0 }}>
-                    {profile.avatar ? <img src={`http://localhost:5000${profile.avatar}`} alt={profile.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} /> : profile.name.charAt(0)}
+                    {profile.avatar ? <img src={(profile.avatar?.startsWith('http') ? profile.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${profile.avatar}`)} alt={profile.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} /> : profile.name.charAt(0)}
                 </div>
                 <div style={{ flex: 1, minWidth: '300px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
@@ -141,7 +141,7 @@ const StudentPublicProfile = () => {
 
                         {profile.resume && (
                             <div style={{ display: 'flex' }}>
-                                <a href={`http://localhost:5000${profile.resume}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: 'var(--color-error)' }}>
+                                <a href={(profile.resume?.startsWith('http') ? profile.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${profile.resume}`)} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.6rem 1.2rem', backgroundColor: 'var(--color-error)' }}>
                                     <FaFilePdf /> View Resume
                                 </a>
                             </div>
@@ -157,7 +157,7 @@ const StudentPublicProfile = () => {
                                         ...(profile.linkedin ? [{ node: <FaLinkedin size={24} color="#0A66C2" />, title: 'LinkedIn', href: profile.linkedin }] : []),
                                         ...(profile.twitter ? [{ node: <FaXTwitter size={24} color="#2D5A3D" />, title: 'X', href: profile.twitter }] : []),
                                         ...(profile.portfolioWebsite ? [{ node: <FaGlobe size={24} color="#059669" />, title: 'Portfolio', href: profile.portfolioWebsite }] : []),
-                                        ...(profile.resume ? [{ node: <FaFilePdf size={24} color="#DC2626" />, title: 'Resume', href: `http://localhost:5000${profile.resume}` }] : []),
+                                        ...(profile.resume ? [{ node: <FaFilePdf size={24} color="#DC2626" />, title: 'Resume', href: (profile.resume?.startsWith('http') ? profile.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${profile.resume}`) }] : []),
                                         ...(profile.customLinkUrl ? [{ node: <FaLink size={24} color="#6366F1" />, title: profile.customLinkName || 'Link', href: profile.customLinkUrl }] : [])
                                     ]}
                                     speed={120}
@@ -205,7 +205,7 @@ const StudentPublicProfile = () => {
                                     {item.description && <p style={{ margin: '0 0 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)', flex: 1 }}>{item.description}</p>}
                                     <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
                                         {(item.link || item.projectLink) && <a href={item.projectLink || item.link} target="_blank" rel="noreferrer" style={{ color: 'var(--color-primary)', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 500 }}>View Project →</a>}
-                                        {item.portfolioPDF && <a href={`http://localhost:5000${item.portfolioPDF}`} target="_blank" rel="noreferrer" style={{ color: 'var(--color-error)', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 500, marginLeft: '1rem' }}><FaFilePdf /> PDF Document</a>}
+                                        {item.portfolioPDF && <a href={(item.portfolioPDF?.startsWith('http') ? item.portfolioPDF : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${item.portfolioPDF}`)} target="_blank" rel="noreferrer" style={{ color: 'var(--color-error)', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 500, marginLeft: '1rem' }}><FaFilePdf /> PDF Document</a>}
                                     </div>
                                 </div>
                             ))}

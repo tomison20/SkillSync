@@ -273,7 +273,7 @@ const EventDetails = () => {
                             {userRegistration?.certificateUrl && (
                                 <div style={{ marginBottom: '1rem' }}>
                                     <a 
-                                        href={`http://localhost:5000${userRegistration.certificateUrl}`} 
+                                        href={(userRegistration.certificateUrl?.startsWith('http') ? userRegistration.certificateUrl : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${userRegistration.certificateUrl}`)} 
                                         download
                                         target="_blank" 
                                         rel="noreferrer" 
@@ -378,7 +378,7 @@ const EventDetails = () => {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.75rem' }}>
                         {photos.map((photo, idx) => (
                             <div key={idx} onClick={() => setViewingPhoto(photo)} style={{ cursor: 'pointer', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--color-border)', position: 'relative', aspectRatio: '1' }}>
-                                <img src={`http://localhost:5000${photo.imageUrl}`} alt={photo.caption || 'Event photo'} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                                <img src={(photo.imageUrl?.startsWith('http') ? photo.imageUrl : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${photo.imageUrl}`)} alt={photo.caption || 'Event photo'} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                                 {photo.caption && (
                                     <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0.5rem', background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', color: 'white', fontSize: '0.75rem' }}>
                                         {photo.caption}
@@ -397,7 +397,7 @@ const EventDetails = () => {
                 <div onClick={() => setViewingPhoto(null)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, cursor: 'pointer' }}>
                     <button onClick={() => setViewingPhoto(null)} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}><FaTimes /></button>
                     <div onClick={e => e.stopPropagation()} style={{ maxWidth: '90vw', maxHeight: '85vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <img src={`http://localhost:5000${viewingPhoto.imageUrl}`} alt={viewingPhoto.caption || ''} style={{ maxWidth: '100%', maxHeight: '75vh', borderRadius: '8px', objectFit: 'contain' }} />
+                        <img src={(viewingPhoto.imageUrl?.startsWith('http') ? viewingPhoto.imageUrl : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${viewingPhoto.imageUrl}`)} alt={viewingPhoto.caption || ''} style={{ maxWidth: '100%', maxHeight: '75vh', borderRadius: '8px', objectFit: 'contain' }} />
                         {viewingPhoto.caption && <p style={{ color: 'white', marginTop: '1rem', fontSize: '0.95rem', textAlign: 'center' }}>{viewingPhoto.caption}</p>}
                         {viewingPhoto.geolocation?.latitude && (
                             <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', marginTop: '0.25rem' }}>

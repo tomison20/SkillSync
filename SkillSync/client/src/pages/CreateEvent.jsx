@@ -105,7 +105,7 @@ const CreateEvent = () => {
                                         />
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                             {member.avatar ? (
-                                                <img src={member.avatar.startsWith('http') ? member.avatar : `http://localhost:5000${member.avatar}`} alt={member.name} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
+                                                <img src={member.avatar.startsWith('http') ? member.avatar : (member.avatar?.startsWith('http') ? member.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${member.avatar}`)} alt={member.name} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
                                             ) : (
                                                 <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'var(--color-accent)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}>
                                                     {member.name?.charAt(0)}

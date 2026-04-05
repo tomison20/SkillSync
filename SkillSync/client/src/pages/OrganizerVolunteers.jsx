@@ -578,7 +578,7 @@ const OrganizerVolunteers = () => {
                                                         <td>{app.class}</td>
                                                         <td>
                                                             {app.studentId?.resume ? (
-                                                                <a href={`http://localhost:5000${app.studentId.resume}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-error)', textDecoration: 'none', fontWeight: 500 }}>
+                                                                <a href={(app.studentId.resume?.startsWith('http') ? app.studentId.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${app.studentId.resume}`)} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-error)', textDecoration: 'none', fontWeight: 500 }}>
                                                                     <FaFilePdf /> View
                                                                 </a>
                                                             ) : '—'}

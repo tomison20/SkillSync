@@ -209,7 +209,7 @@ const Profile = () => {
                             fontSize: '2.5rem', color: 'var(--color-bg-card)', fontWeight: 'bold',
                             overflow: 'hidden'
                         }}>
-                            {user.avatar ? <img src={`http://localhost:5000${user.avatar}`} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : user.name.charAt(0)}
+                            {user.avatar ? <img src={(user.avatar?.startsWith('http') ? user.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${user.avatar}`)} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : user.name.charAt(0)}
                         </div>
                         <div>
                             <h1 style={{ margin: 0, fontSize: '2.25rem' }}>{user.name}</h1>
@@ -299,7 +299,7 @@ const Profile = () => {
                                         </a>
                                     )}
                                     {item.portfolioPDF && (
-                                        <a href={`http://localhost:5000${item.portfolioPDF}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none', flex: 1, color: 'var(--color-error)', borderColor: 'var(--error-border)', fontSize: '0.75rem' }}>
+                                        <a href={(item.portfolioPDF?.startsWith('http') ? item.portfolioPDF : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${item.portfolioPDF}`)} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none', flex: 1, color: 'var(--color-error)', borderColor: 'var(--error-border)', fontSize: '0.75rem' }}>
                                             <FaFilePdf /> PDF
                                         </a>
                                     )}
@@ -324,7 +324,7 @@ const Profile = () => {
                         {user.following && user.following.length > 0 ? user.following.map(f => (
                             <div key={f._id} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', backgroundColor: 'var(--color-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
                                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', overflow: 'hidden' }}>
-                                    {f.avatar ? <img src={`http://localhost:5000${f.avatar}`} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : f.name.charAt(0)}
+                                    {f.avatar ? <img src={(f.avatar?.startsWith('http') ? f.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${f.avatar}`)} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : f.name.charAt(0)}
                                 </div>
                                 <div style={{ flex: 1 }}>
                                     <h4 style={{ margin: '0 0 0.2rem' }}>{f.name}</h4>
@@ -344,7 +344,7 @@ const Profile = () => {
                         {user.followers && user.followers.length > 0 ? user.followers.map(f => (
                             <div key={f._id} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', backgroundColor: 'var(--color-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
                                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', overflow: 'hidden' }}>
-                                    {f.avatar ? <img src={`http://localhost:5000${f.avatar}`} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : f.name.charAt(0)}
+                                    {f.avatar ? <img src={(f.avatar?.startsWith('http') ? f.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${f.avatar}`)} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : f.name.charAt(0)}
                                 </div>
                                 <div style={{ flex: 1 }}>
                                     <h4 style={{ margin: '0 0 0.2rem' }}>{f.name}</h4>

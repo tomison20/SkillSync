@@ -153,7 +153,7 @@ const OrganizerDashboard = () => {
                         <div className="card" style={{ marginBottom: '1.5rem', borderLeft: '4px solid #2D5A3D' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
                                 <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent-700), var(--accent-800))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0, overflow: 'hidden' }}>
-                                    {userProfile.avatar ? <img src={`http://localhost:5000${userProfile.avatar}`} alt={userProfile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : userProfile.name?.charAt(0)}
+                                    {userProfile.avatar ? <img src={(userProfile.avatar?.startsWith('http') ? userProfile.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${userProfile.avatar}`)} alt={userProfile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : userProfile.name?.charAt(0)}
                                 </div>
                                 <div style={{ flex: 1, minWidth: '200px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
@@ -288,7 +288,7 @@ const OrganizerDashboard = () => {
                                                                                             {app.freelancer?.email}
                                                                                         </p>
                                                                                         {app.freelancer?.resume && (
-                                                                                            <a href={`http://localhost:5000${app.freelancer.resume}`} target="_blank" rel="noreferrer" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-error)', textDecoration: 'none', fontWeight: 600, marginTop: '0.2rem' }}>
+                                                                                            <a href={(app.freelancer.resume?.startsWith('http') ? app.freelancer.resume : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${app.freelancer.resume}`)} target="_blank" rel="noreferrer" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-error)', textDecoration: 'none', fontWeight: 600, marginTop: '0.2rem' }}>
                                                                                                 <FaFilePdf /> View Resume
                                                                                             </a>
                                                                                         )}
@@ -404,7 +404,7 @@ const OrganizerDashboard = () => {
                                             {item.image ? (
                                                 <div style={{ height: '180px', width: '100%', overflow: 'hidden' }}>
                                                     <img
-                                                        src={item.image.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
+                                                        src={item.image.startsWith('http') ? item.image : (item.image?.startsWith('http') ? item.image : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${item.image}`)}
                                                         alt={item.title}
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease' }}
                                                     />
@@ -417,7 +417,7 @@ const OrganizerDashboard = () => {
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--color-border)' }}>
                                                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', fontWeight: 600, overflow: 'hidden', flexShrink: 0 }}>
                                                         {item.student?.avatar ? (
-                                                            <img src={`http://localhost:5000${item.student.avatar}`} alt={item.student.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                            <img src={(item.student.avatar?.startsWith('http') ? item.student.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${item.student.avatar}`)} alt={item.student.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                         ) : (
                                                             item.student?.name?.charAt(0) || 'S'
                                                         )}
@@ -440,12 +440,12 @@ const OrganizerDashboard = () => {
                                                         </a>
                                                     )}
                                                     {item.link && (
-                                                        <a href={item.link.startsWith('http') ? item.link : `http://localhost:5000${item.link}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                                                        <a href={item.link.startsWith('http') ? item.link : (item.link?.startsWith('http') ? item.link : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${item.link}`)} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                                                             <FaLink /> Proof
                                                         </a>
                                                     )}
                                                     {item.portfolioPDF && (
-                                                        <a href={`http://localhost:5000${item.portfolioPDF}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', color: 'var(--color-error)' }}>
+                                                        <a href={(item.portfolioPDF?.startsWith('http') ? item.portfolioPDF : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${item.portfolioPDF}`)} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', color: 'var(--color-error)' }}>
                                                             <FaFilePdf /> PDF
                                                         </a>
                                                     )}

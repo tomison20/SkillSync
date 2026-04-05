@@ -121,7 +121,7 @@ const OrganizerProfile = () => {
                             <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 {form.avatar ? (
                                     <img
-                                        src={`http://localhost:5000${form.avatar}`}
+                                        src={(form.avatar?.startsWith('http') ? form.avatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${form.avatar}`)}
                                         alt="Avatar Preview"
                                         style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-primary)' }}
                                     />

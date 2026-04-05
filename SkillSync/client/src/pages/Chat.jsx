@@ -165,7 +165,7 @@ const Chat = ({ isGroup = false }) => {
                 </Link>
 
                 <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '1.2rem', overflow: 'hidden' }}>
-                    {displayAvatar ? <img src={`http://localhost:5000${displayAvatar}`} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : displayInitials}
+                    {displayAvatar ? <img src={(displayAvatar?.startsWith('http') ? displayAvatar : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${displayAvatar}`)} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : displayInitials}
                 </div>
 
                 <div style={{ flex: 1 }}>
@@ -237,11 +237,11 @@ const Chat = ({ isGroup = false }) => {
                                         {msg.attachmentUrl && (
                                             <div style={{ marginBottom: msg.content ? '0.5rem' : '0' }}>
                                                 {isImage ? (
-                                                    <a href={`http://localhost:5000${msg.attachmentUrl}`} target="_blank" rel="noopener noreferrer">
-                                                        <img src={`http://localhost:5000${msg.attachmentUrl}`} alt="attachment" style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px', display: 'block' }} />
+                                                    <a href={(msg.attachmentUrl?.startsWith('http') ? msg.attachmentUrl : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${msg.attachmentUrl}`)} target="_blank" rel="noopener noreferrer">
+                                                        <img src={(msg.attachmentUrl?.startsWith('http') ? msg.attachmentUrl : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${msg.attachmentUrl}`)} alt="attachment" style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px', display: 'block' }} />
                                                     </a>
                                                 ) : (
-                                                    <a href={`http://localhost:5000${msg.attachmentUrl}`} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'inherit', textDecoration: 'underline', wordBreak: 'break-all' }}>
+                                                    <a href={(msg.attachmentUrl?.startsWith('http') ? msg.attachmentUrl : `${import.meta.env.MODE === 'production' ? 'https://skillsync-0xug.onrender.com' : 'http://localhost:5000'}${msg.attachmentUrl}`)} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'inherit', textDecoration: 'underline', wordBreak: 'break-all' }}>
                                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
                                                         {msg.attachmentOrigName || 'Download File'}
                                                     </a>
